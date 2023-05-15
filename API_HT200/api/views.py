@@ -67,4 +67,137 @@ class readSplitHT200(APIView):
             controlador.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
+class readPatternHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getPattern()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+class readAccionHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getAccion()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+
+class readPlanesHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getPlanes()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+
+class readScneduleHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getScnedule()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+class readDeviceInfoHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getDeviceInfo()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+        
+
+class readBasicInfoHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getBasicInfo()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+
+class readUnitHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getUnit()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+        
+class readChannelHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getChannel()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+
+class readCoordHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getCoord()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+class readOverlapHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador.getOverlap()
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            controlador.disconnect()
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+
+
+
+
+
+
+
+
 

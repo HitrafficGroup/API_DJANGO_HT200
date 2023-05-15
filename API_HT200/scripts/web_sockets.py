@@ -286,6 +286,7 @@ class MySocket:
             plansize = 73
             if 16 == rx_var[0] and self.__rx_num == (plansize * 16 + 1):
                 readpoint = 1;
+                plan_total_list = []
                 for i in range(1): #le dejamos en 1 para obtener solo el primer plan
                     plan = rx_var[readpoint]
                     plan_list = []
@@ -307,8 +308,8 @@ class MySocket:
                         }
                         plan_list.append(plan_dict)
                     df = pd.DataFrame(plan_list)
-                    print(df)
-                return plan_list
+                    plan_total_list.append(plan_list)
+                return plan_total_list
 
     def getScnedule(self):
         rx_var = self.__rx_var
@@ -346,7 +347,7 @@ class MySocket:
                     break
 
             manufacturerInfoStr = ''.join([chr(temp[i]) for i in range(StrLen)])
-            deviceinfo_dict = {'manufacurer',manufacturerInfoStr}
+            deviceinfo_dict = {'manufacurer':manufacturerInfoStr}
             return deviceinfo_dict
           
 
@@ -462,7 +463,8 @@ class MySocket:
                     "MaximumMode":MaximumMode,
                     "ForceMode":ForceMode,
                 }
-                print(coord_dict)
+                return coord_dict
+
 
     def getOverlap(self):
          rx_var = self.__rx_var
@@ -494,7 +496,7 @@ class MySocket:
                     }
                     overlap_list.append(overlapDict)
                 df = pd.DataFrame(overlap_list)
-                print(df)
+                return(overlap_list)
     def setUnit(self,data):
         gbtx = bytearray(25)
         #trama normal para escritura
