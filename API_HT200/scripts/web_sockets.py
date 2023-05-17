@@ -515,9 +515,8 @@ class MySocket:
         temp_var = []
         num = 11;
         temp_num = 12
-        for key in data:
-            value = data.get(key)
-            temp_var.append(value) #coegmos los datos de la api y los convertimos en una lista para posteriormente formatear y crear la trama udp
+        for i in data:
+            temp_var.append(i) #coegmos los datos de la api y los convertimos en una lista para posteriormente formatear y crear la trama udp
         for i in range(temp_num):
             if temp_var[i] == 0xC0:
                 gbtx[num] = 0xDB

@@ -18,4 +18,5 @@ urlpatterns = [
      path('getChannelHT200', readChannelHT200.as_view()),
      path('getCoordlHT200', readCoordHT200.as_view()),
      path('getOverlapHT200', readOverlapHT200.as_view()),
+     path('setUnitHT200', setUnitHT200.as_view()),
 ]

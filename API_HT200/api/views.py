@@ -13,7 +13,21 @@ controlador = web_sockets.MySocket('192.168.1.122')
 class homeView(APIView):
     ''' Vista de Inicio'''
     def get(self, request, *args, **kwargs):
-        result = {"message": "Hello, world!"}
+        result = {"para obtener tiempos": "/getTimeHT200",
+                  "para obtener fases": "/getFasesHT200",
+                  "para obtener secuencias": "/getSecuenciaHT200",
+                  "para obtener spllit": "/getSplitHT200",
+                  "para obtener patrones": "/getPatternHT200",
+                  "para obtener acciones": "/getAccionHT200",
+                  "para obtener planes": "/getPlanesHT200",
+                  "para obtener horarios": "/getScneduleHT200",
+                  "para obtener info1": "/getDeviceInfoHT200",
+                  "para obtener info2": "/getBasicInfoHT200",
+                  "para obtener unidades": "/getUnitHT200",
+                  "para obtener canales": "/getChannelHT200",
+                  "para obtener cordenadas": "/getCoordlHT200",
+                  "para obtener superposicion": "/getOverlapHT200",
+                  }
         print(result)
         return Response(result,status=status.HTTP_200_OK)
     
@@ -195,7 +209,27 @@ class readOverlapHT200(APIView):
 
 
 
+#comandos de escritura
 
+class setUnitHT200(APIView):
+    def post(self, request, *args, **kwargs):
+        if len(request.body) == 0 :
+            raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
+        json_data = json.loads(request.body)
+        print(json_data)
+        try:
+            result = controlador.setUnit(json_data['trama'])
+            if result:
+                print('envio correcto')
+                return Response(result,status=status.HTTP_200_OK)
+            else:
+                print('envio incorrecto')
+                return Response(result,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
+            return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 
 
