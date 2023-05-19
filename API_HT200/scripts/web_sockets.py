@@ -172,9 +172,11 @@ class MySocket:
         if self.readPendingDatagrams(tramas.secuence_frame,ip_address=self.ip_target):
             SequenceSize =(16 + 1) * 4 + 1
             list_secuencies = []
+            table = 0
             if 16 == rx_var[0] and self.__rx_num == SequenceSize * 16+ 1:
                 readpoint = 1
-                for i in range(1): 
+                for i in range(8): 
+                    table +=1
                     Num = rx_var[readpoint]
                     readpoint +=1
                     rings_secuency = []
@@ -185,12 +187,12 @@ class MySocket:
                         for i in range(16):
                             fase = rx_var[readpoint]
                             readpoint +=1
-                            fase_data = ('paso_{calculo}'.format(calculo = i+1),fase)
+                            fase_data = {"id":"paso-{calculo}".format(calculo = i+1),"value":fase}
                             fases_ring.append(fase_data)
-                        fases_dict = dict((x, y) for x, y in fases_ring)
-                        rings_secuency.append(fases_dict)
+                        rings_secuency.append(fases_ring)
                     df = pd.DataFrame(rings_secuency)
-                    list_secuencies.append(fases_dict)
+                    print(df)
+                    list_secuencies.append({"data":rings_secuency,"id":"seq-{}".format(table)})
                 return list_secuencies
     def getSplit(self):
         rx_var = self.__rx_var
@@ -582,7 +584,7 @@ class MySocket:
             temp_num = 512
             for x in data:
                 for i in x:
-                    temp_var.append(int(i)) #coegmos los datos de la api y los convertimos en una lista para posteriormente formatear y crear la trama udp
+                    temp_var.append(int(i)) #cogemos los datos de la api y los convertimos en una lista para posteriormente formatear y crear la trama udp
             for i in range(temp_num):
                 if temp_var[i] == 0xC0:
                     gbtx[num] = 0xDB
