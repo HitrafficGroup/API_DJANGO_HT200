@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 ALLOWED_HOSTS = [
-    '.localhost', '127.0.0.2','127.0.0.1','192.168.1.175','10.8.0.2'
+    '.localhost', '127.0.0.2','127.0.0.1','192.168.1.175','10.8.0.2','192.168.1.14'
 ]
 
 # Internationalization

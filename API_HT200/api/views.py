@@ -9,7 +9,7 @@ funciones de lectura del controlador
 
 '''
 
-controlador = web_sockets.MySocket('192.168.1.122')
+controlador = web_sockets.MySocket('192.168.2.122')
 class homeView(APIView):
     ''' Vista de Inicio'''
     def get(self, request, *args, **kwargs):
