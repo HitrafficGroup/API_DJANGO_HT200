@@ -21,4 +21,5 @@ urlpatterns = [
      #funciones de escritura
      path('setUnitHT200',setUnitHT200.as_view()),
      path('setFasesHT200',setFasesHT200.as_view()),
+     path('setSecuenciasHT200',setSecuenciasHT200.as_view()),
 ]
