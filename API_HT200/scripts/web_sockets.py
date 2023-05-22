@@ -201,7 +201,9 @@ class MySocket:
             split_list_total = []
             if 20 == rx_var[0] and self.__rx_num == SplitSize * 20 + 1:
                 readpoint = 1
-                for i in range(1): #le dejamos en 1 para mostrar solo la tabla 1
+                index = 0
+                for i in range(8): #le dejamos en 1 para mostrar solo la tabla 1
+                    index+=1
                     num = rx_var[readpoint]
                     split_list = []
                     readpoint +=1
@@ -223,7 +225,7 @@ class MySocket:
                         split_list.append(split_dict)
                     df = pd.DataFrame(split_list)
                     print(df)
-                    split_list_total.append(split_list)
+                    split_list_total.append({"data":split_list,"id":"split-{}".format(index)})
                 return split_list_total
 
     def getPattern(self):
