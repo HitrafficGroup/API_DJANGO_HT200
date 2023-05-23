@@ -97,7 +97,6 @@ class MySocket:
             "mes":month,
             "year":year,
             }
-            print(time_controler)
             return time_controler
     def getFases(self):
         rx_var = self.__rx_var
@@ -163,8 +162,6 @@ class MySocket:
                         'releasephase':ReleasePhase
                     }
                     data_list.append(data_fase)
-            
-                df = pd.DataFrame(data_list)
                 return(data_list)
     
     def getSecuencia(self):
@@ -190,8 +187,6 @@ class MySocket:
                             fase_data = {"id":"paso-{calculo}".format(calculo = i+1),"value":fase}
                             fases_ring.append(fase_data)
                         rings_secuency.append(fases_ring)
-                    df = pd.DataFrame(rings_secuency)
-                    print(df)
                     list_secuencies.append({"data":rings_secuency,"id":"seq-{}".format(table)})
                 return list_secuencies
     def getSplit(self):
@@ -223,8 +218,6 @@ class MySocket:
                             'coord':coord
                         }
                         split_list.append(split_dict)
-                    df = pd.DataFrame(split_list)
-                    print(df)
                     split_list_total.append({"data":split_list,"id":"split-{}".format(index)})
                 return split_list_total
 
@@ -251,7 +244,6 @@ class MySocket:
                         'workmode':WorkMode,
                     }
                     pattern_list.append(pattern_dict)
-                df = pd.DataFrame(pattern_list)
                 return pattern_list
                 
     '''
@@ -281,7 +273,6 @@ class MySocket:
                         'special':Special
                     }
                     action_list.append(action_dict)
-                df = pd.DataFrame(action_list)
                 return action_list
     
     def getPlanes(self):
@@ -311,7 +302,6 @@ class MySocket:
                             'accion':accion
                         }
                         plan_list.append(plan_dict)
-                    df = pd.DataFrame(plan_list)
                     plan_total_list.append(plan_list)
                 return plan_total_list
 
@@ -335,7 +325,6 @@ class MySocket:
                     'date':date,
                 }
                 schedule_list.append(schedule_dict)
-            df = pd.DataFrame(schedule_list)
             return schedule_list
     def getDeviceInfo(self):
         rx_var = self.__rx_var
@@ -451,7 +440,7 @@ class MySocket:
                         "CountdownID":CountdownID,
                     }
                     channel_list.append(channel_dict)
-                df = pd.DataFrame(channel_list)
+
                 return(channel_list)
     def getCoord(self):
         rx_var = self.__rx_var
@@ -499,7 +488,6 @@ class MySocket:
                         "TrailRed":TrailRed,
                     }
                     overlap_list.append(overlapDict)
-                df = pd.DataFrame(overlap_list)
                 return(overlap_list)
     def setUnit(self,data):
         gbtx = bytearray(25)
@@ -558,7 +546,6 @@ class MySocket:
         self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
         data_received, sender = self.__udpsocket.recvfrom(2048)
         trama_respuesta = list(data_received)
-        print(trama_respuesta)
         if trama_respuesta[8] == 132:
             return True
         else:
@@ -685,6 +672,76 @@ class MySocket:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
+            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
+            data_received, sender = self.__udpsocket.recvfrom(2048)
+            trama_respuesta = list(data_received)
+            if trama_respuesta[8] == 132:
+                return True
+            else:
+                return False
+    
+    def setSplit(self,data):
+            gbtx = bytearray(1314)
+            #trama normal para escritura
+            gbtx[0]=192
+            gbtx[1]=32
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[5]= 1
+            gbtx[6]= 1
+            gbtx[7]= 0
+            gbtx[10]= 1
+            #trama que especifica que se van a grabar los datos en unit 
+            gbtx[4] = 3
+            gbtx[8] = 129
+            gbtx[9] = 20
+            gbtx[11] = 20
+            temp_var = []
+            num = 12;
+            temp_num = 1300
+            for x in data:
+                temp_var.append(int(x))
+                     
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+            print(CheckSumCalc)
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+            
+            n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
+            # return True
             self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
             data_received, sender = self.__udpsocket.recvfrom(2048)
             trama_respuesta = list(data_received)
