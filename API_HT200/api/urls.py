@@ -24,4 +24,5 @@ urlpatterns = [
      path('setSecuenciasHT200',setSecuenciasHT200.as_view()),
      path('setSplitHT200',setSplitHT200.as_view()),
      path('setPatternHT200',setPatternHT200.as_view()),
+     path('setActionHT200',setActionHT200.as_view()),
 ]
