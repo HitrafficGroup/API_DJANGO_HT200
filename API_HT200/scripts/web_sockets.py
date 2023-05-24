@@ -224,6 +224,7 @@ class MySocket:
     def getPattern(self):
         rx_var = self.__rx_var
         if self.readPendingDatagrams(tramas.pattern_frame,ip_address=self.ip_target):
+            
             PatternSize = 7
             if 100 == rx_var[0] and self.__rx_num == PatternSize * 100+ 1:
                 pattern_list = []
@@ -244,6 +245,7 @@ class MySocket:
                         'workmode':WorkMode,
                     }
                     pattern_list.append(pattern_dict)
+               
                 return pattern_list
                 
     '''
@@ -750,6 +752,79 @@ class MySocket:
             else:
                 return False
         
+
+    def setPattern(self,data):
+            gbtx = bytearray(714)
+            #trama normal para escritura
+            gbtx[0]=192
+            gbtx[1]=32
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[5]= 1
+            gbtx[6]= 1
+            gbtx[7]= 0
+            gbtx[10]= 1
+            #trama que especifica que se van a grabar los datos en unit 
+            gbtx[4] = 3
+            gbtx[8] = 129
+            gbtx[9] = 8
+            gbtx[11] = 100
+            temp_var = []
+            num = 12;
+            temp_num = 700
+            for x in data:
+                temp_var.append(int(x))
+                     
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+            print(CheckSumCalc)
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+            
+            n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
+            # return True
+            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
+            data_received, sender = self.__udpsocket.recvfrom(2048)
+            trama_respuesta = list(data_received)
+            if trama_respuesta[8] == 132:
+                return True
+            else:
+                return False
+        
+
+                
 
                 
 
