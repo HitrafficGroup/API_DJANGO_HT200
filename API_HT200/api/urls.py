@@ -25,4 +25,5 @@ urlpatterns = [
      path('setSplitHT200',setSplitHT200.as_view()),
      path('setPatternHT200',setPatternHT200.as_view()),
      path('setActionHT200',setActionHT200.as_view()),
+     path('setPlanHT200',setPlanHT200.as_view()),
 ]
