@@ -308,13 +308,16 @@ class MySocket:
 
     def getScnedule(self):
         rx_var = self.__rx_var
+        print('pedimos horarios')
         if self.readPendingDatagrams(tramas.schedule_frame,ip_address=self.ip_target):
             schedule_size = 9
             schedule_list = []
             for i in range(5):
                 readpoint = schedule_size*i +1
                 number = rx_var[readpoint]
-                month = rx_var[readpoint+1] | (rx_var[readpoint+2]<<8)
+                m_1 = rx_var[readpoint+1]
+                m_2=  rx_var[readpoint+2]
+                month = m_1 | (m_2<<8)
                 day = rx_var[readpoint+3]
                 date = rx_var[readpoint+4] |(rx_var[readpoint+5]<<8) |(rx_var[readpoint+6]<<16) |(rx_var[readpoint+7]<<24)
                 day_plan = rx_var[readpoint+8];
@@ -324,6 +327,8 @@ class MySocket:
                     'month':month,
                     'day':day,
                     'date':date,
+                    'm1':m_1,
+                    'm2':m_2
                 }
                 schedule_list.append(schedule_dict)
             return schedule_list
