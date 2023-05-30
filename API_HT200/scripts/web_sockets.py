@@ -444,14 +444,14 @@ class MySocket:
                     CountdownID = rx_var[readpoint]
                     readpoint +=1
                     channel_dict = {
-                        "Num":Num,
-                        "ControlSource":ControlSource,
-                        "ControlType":ControlType,
-                        "Flash":Flash,
-                         "Flash":Dim,
-                        "Position":Position,
-                        "Direction":Direction,
-                        "CountdownID":CountdownID,
+                        "number":Num,
+                        "source":ControlSource,
+                        "type":ControlType,
+                        "flash":Flash,
+                         "dim":Dim,
+                        "position":Position,
+                        "direction":Direction,
+                        "countdown":CountdownID,
                     }
                     channel_list.append(channel_dict)
 
