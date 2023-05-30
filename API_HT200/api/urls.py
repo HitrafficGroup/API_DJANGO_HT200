@@ -26,4 +26,5 @@ urlpatterns = [
      path('setPatternHT200',setPatternHT200.as_view()),
      path('setActionHT200',setActionHT200.as_view()),
      path('setPlanHT200',setPlanHT200.as_view()),
+     path('setHorariosHT200',setHorariosHT200.as_view()),
 ]

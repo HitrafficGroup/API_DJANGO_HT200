@@ -312,14 +312,18 @@ class MySocket:
         if self.readPendingDatagrams(tramas.schedule_frame,ip_address=self.ip_target):
             schedule_size = 9
             schedule_list = []
-            for i in range(5):
+            for i in range(40):
                 readpoint = schedule_size*i +1
                 number = rx_var[readpoint]
                 m_1 = rx_var[readpoint+1]
                 m_2=  rx_var[readpoint+2]
                 month = m_1 | (m_2<<8)
                 day = rx_var[readpoint+3]
-                date = rx_var[readpoint+4] |(rx_var[readpoint+5]<<8) |(rx_var[readpoint+6]<<16) |(rx_var[readpoint+7]<<24)
+                byte1_date = rx_var[readpoint+4]
+                byte2_date= rx_var[readpoint+5]
+                byte3_date= rx_var[readpoint+6]
+                byte4_date = rx_var[readpoint+7]
+                date =  byte1_date|(byte2_date<<8)|(byte3_date<<16) |(byte4_date<<24)
                 day_plan = rx_var[readpoint+8];
                 schedule_dict = {
                     'number':number,
@@ -327,6 +331,10 @@ class MySocket:
                     'month':month,
                     'day':day,
                     'date':date,
+                    'd1':byte1_date,
+                    'd2':byte2_date,
+                    'd3':byte3_date,
+                    'd4':byte4_date,
                     'm1':m_1,
                     'm2':m_2
                 }
@@ -966,6 +974,82 @@ class MySocket:
                 return False
                 
         
+
+
+
+    def setHorarios(self,data):
+            gbtx = bytearray(374)
+            #trama normal para escritura
+            gbtx[0]=192
+            gbtx[1]=32
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[5]= 1
+            gbtx[6]= 1
+            gbtx[7]= 0
+            gbtx[10]= 1
+            #trama que especifica que se van a grabar los datos en unit 
+            gbtx[4] = 3
+            gbtx[8] = 129
+            gbtx[9] = 9
+            gbtx[11] = 40
+            temp_var = []
+            num = 12;
+            temp_num = 360
+            for x in data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+     
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+            
+            # n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
+            # return True
+            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
+            data_received, sender = self.__udpsocket.recvfrom(2048)
+            trama_respuesta = list(data_received)
+            if trama_respuesta[8] == 132:
+                return True
+            else:
+                return False
+                
+        
+
+
+
 
 
 
