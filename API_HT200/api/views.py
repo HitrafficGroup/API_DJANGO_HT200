@@ -368,6 +368,45 @@ class setHorariosHT200(APIView):
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 
+class setChannelHT200(APIView):
+    def post(self, request, *args, **kwargs):
+        if len(request.body) == 0 :
+            raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
+        json_data = json.loads(request.body)
+        try:
+            result = controlador.setChannel(json_data['trama'])
+            if result:
+                print('envio correcto')
+                return Response(result,status=status.HTTP_200_OK)
+            else:
+                print('envio incorrecto')
+                return Response(result,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
+            return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
+
+class setIpTarget(APIView):
+    def post(self, request, *args, **kwargs):
+        if len(request.body) == 0 :
+            raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
+        json_data = json.loads(request.body)
+        try:
+            result = controlador.setIpTarget(json_data['ip'])
+            if result:
+                print('envio correcto')
+                return Response(result,status=status.HTTP_200_OK)
+            else:
+                print('envio incorrecto')
+                return Response(result,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            controlador.disconnect()
+            return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
+
+
 
 
 
