@@ -14,20 +14,13 @@ class MySocketSW12:
         self.__ips_connected = []
         self.__port = 4001
         self.ip_target = ip_target
-        self.__tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.__tcpSocket.settimeout(10)
-        self.__connect()
-     
-    def __connect(self):
-        try:
-            self.__tcpSocket.connect((self.ip_target,self.__port))
-            print("Nos conectamos al socket sw12")
-        except socket.timeout:
-            print("tiempo de espera sobrepasado")
-            self.disconnect()
     def readPendingDatagrams(self,__frame):
-        self.__tcpSocket.sendto(__frame,(self.ip_target,self.__port))
-        reply = self.__tcpSocket.recv(1024)
+        __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        __tcpSocket.settimeout(10)
+        __tcpSocket.connect((self.ip_target,self.__port))
+        __tcpSocket.sendall(__frame)
+        reply = __tcpSocket.recv(1024)
+        __tcpSocket.close
         self.rx_var_formated = []
         data = list(reply)
         if (data[8]== 131):
@@ -210,27 +203,38 @@ class MySocketSW12:
         try:
             if(self.readPendingDatagrams(tramas_sw12.horarios_frame)):
                 print("Horario Obtenido")
+                print(self.rx_var_formated)
                 horarios_data = []
                 counter = 1
                 for i in range(16):
                     num = i
-                    tiempo = self.rx_var_formated[counter]
+                    hora = self.rx_var_formated[counter]
                     counter +=1
-                    modo = self.rx_var_formated[counter]
+                    minuto = self.rx_var_formated[counter]
                     counter +=1
-                    plan = self.rx_var_formated[counter]
+                    mod = self.rx_var_formated[counter]
                     counter +=1
                     desfase = self.rx_var_formated[counter]
                     counter +=1
                     horario = {
                                 'id':'horario-{}'.format(num),
-                                'tiempo':tiempo,
-                                'modo':modo,
-                                'plan':plan,
+                                'hora':hora,
+                                'minuto':minuto,
+                                'modo':mod,
                                 'desfase':desfase,
                             }
                     horarios_data.append(horario)
-                return horarios_data
+                data_json = {
+                        'data':horarios_data,
+                        'status':True
+                    }
+                return data_json
+            else:
+                data_json = {
+                    'data':[],
+                    'status':False
+                }
+                return data_json
         except socket.error:
             sys.exit()
     def getWeekendSchedule(self):
@@ -399,9 +403,7 @@ class MySocketSW12:
                             # return params
             except socket.error:
                 sys.exit()
-    def disconnect(self):
-        self.__tcpSocket.close()
-        print("Nos desconectamos del socket sw12")
+
 
 
 # tcp_client = MySocketSW12('192.168.2.97')

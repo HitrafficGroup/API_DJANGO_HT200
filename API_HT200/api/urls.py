@@ -32,4 +32,5 @@ urlpatterns = [
      path('setIpTarget',setIpTarget.as_view()),
      #funciones de lectura sw12
      path('getFasesSW12', getFasesSW12.as_view()),
+     path('getOrdinaryScheduleSW12', getOrdinaryScheduleSW12.as_view()),
 ]

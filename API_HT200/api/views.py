@@ -411,11 +411,14 @@ class setIpTarget(APIView):
 
 
 
+'''
+funciones de lectura del controlador sw12
+'''
+
 class getFasesSW12(APIView):
     ''' Lectura del Controlador HT200 '''
     def get(self, request, *args, **kwargs):
         try:
-           
             result = controlador_sw12.getFases()
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
@@ -428,9 +431,19 @@ class getFasesSW12(APIView):
             result = {"error": "problema en el controlador"}
             return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
-'''
-funciones de lectura del controlador sw12
-'''
 
-
-
+class getOrdinaryScheduleSW12(APIView):
+    ''' Lectura del Controlador HT200 '''
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getOrdinarySchedule()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
