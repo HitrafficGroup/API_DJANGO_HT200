@@ -9,7 +9,7 @@ funciones de lectura del controlador
 
 '''
 
-controlador = web_sockets.MySocket('192.168.2.122')
+controlador_ht200 = web_sockets.MySocket('192.168.2.122')
 class homeView(APIView):
     ''' Vista de Inicio'''
     def get(self, request, *args, **kwargs):
@@ -35,175 +35,175 @@ class readTimeH200(APIView):
     ''' Lectura del Controlador HT200 '''
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getTime()
+            result = controlador_ht200.getTime()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
     
 
 class readFasesHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getFases()
+            result = controlador_ht200.getFases()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
         
 class readSecuenciasHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getSecuencia()
+            result = controlador_ht200.getSecuencia()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 class readSplitHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getSplit()
+            result = controlador_ht200.getSplit()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 class readPatternHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getPattern()
+            result = controlador_ht200.getPattern()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 class readAccionHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getAccion()
+            result = controlador_ht200.getAccion()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 
 class readPlanesHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getPlanes()
+            result = controlador_ht200.getPlanes()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 
 class readScneduleHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getScnedule()
+            result = controlador_ht200.getScnedule()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 class readDeviceInfoHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getDeviceInfo()
+            result = controlador_ht200.getDeviceInfo()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
         
 
 class readBasicInfoHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getBasicInfo()
+            result = controlador_ht200.getBasicInfo()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 
 class readUnitHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getUnit()
+            result = controlador_ht200.getUnit()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
         
 class readChannelHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getChannel()
+            result = controlador_ht200.getChannel()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 
 class readCoordHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getCoord()
+            result = controlador_ht200.getCoord()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 class readOverlapHT200(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador.getOverlap()
+            result = controlador_ht200.getOverlap()
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 
@@ -218,7 +218,7 @@ class setUnitHT200(APIView):
         json_data = json.loads(request.body)
         print(json_data)
         try:
-            result = controlador.setUnit(json_data['trama'])
+            result = controlador_ht200.setUnit(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -228,7 +228,7 @@ class setUnitHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 
@@ -239,7 +239,7 @@ class setFasesHT200(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setFases(json_data['trama'])
+            result = controlador_ht200.setFases(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -249,7 +249,7 @@ class setFasesHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 class setSecuenciasHT200(APIView):
@@ -258,7 +258,7 @@ class setSecuenciasHT200(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setSecuencias(json_data['trama'])
+            result = controlador_ht200.setSecuencias(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -268,7 +268,7 @@ class setSecuenciasHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
     
 class setSplitHT200(APIView):
@@ -277,7 +277,7 @@ class setSplitHT200(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setSplit(json_data['trama'])
+            result = controlador_ht200.setSplit(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -287,7 +287,7 @@ class setSplitHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 class setPatternHT200(APIView):
@@ -296,7 +296,7 @@ class setPatternHT200(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setPattern(json_data['trama'])
+            result = controlador_ht200.setPattern(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -306,7 +306,7 @@ class setPatternHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 class setActionHT200(APIView):
@@ -315,7 +315,7 @@ class setActionHT200(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setAction(json_data['trama'])
+            result = controlador_ht200.setAction(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -325,7 +325,7 @@ class setActionHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
         
 class setPlanHT200(APIView):
@@ -334,7 +334,7 @@ class setPlanHT200(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setPlan(json_data['trama'])
+            result = controlador_ht200.setPlan(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -344,7 +344,7 @@ class setPlanHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 
@@ -354,7 +354,7 @@ class setHorariosHT200(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setHorarios(json_data['trama'])
+            result = controlador_ht200.setHorarios(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -364,7 +364,7 @@ class setHorariosHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 
@@ -374,7 +374,7 @@ class setChannelHT200(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setChannel(json_data['trama'])
+            result = controlador_ht200.setChannel(json_data['trama'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -384,7 +384,7 @@ class setChannelHT200(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 class setIpTarget(APIView):
@@ -393,7 +393,7 @@ class setIpTarget(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador.setIpTarget(json_data['ip'])
+            result = controlador_ht200.setIpTarget(json_data['ip'])
             if result:
                 print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
@@ -403,7 +403,7 @@ class setIpTarget(APIView):
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
-            controlador.disconnect()
+            controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 
