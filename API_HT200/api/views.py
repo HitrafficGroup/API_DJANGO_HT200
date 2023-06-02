@@ -1,15 +1,17 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from scripts import web_sockets
+from scripts import web_sockets,web_sockets_sw12
+
 import json
 
 '''
-funciones de lectura del controlador
+funciones de lectura del controlador ht200
 
 '''
 
 controlador_ht200 = web_sockets.MySocket('192.168.2.122')
+controlador_sw12 = web_sockets_sw12.MySocketSW12('192.168.2.97')
 class homeView(APIView):
     ''' Vista de Inicio'''
     def get(self, request, *args, **kwargs):
@@ -27,6 +29,7 @@ class homeView(APIView):
                   "para obtener canales": "/getChannelHT200",
                   "para obtener cordenadas": "/getCoordlHT200",
                   "para obtener superposicion": "/getOverlapHT200",
+                  "fases sw12":"getFasesSW12"
                   }
         print(result)
         return Response(result,status=status.HTTP_200_OK)
@@ -207,9 +210,9 @@ class readOverlapHT200(APIView):
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 
-
-
-#comandos de escritura
+'''
+funciones de escritura del controlador ht200
+'''
 
 class setUnitHT200(APIView):
     def post(self, request, *args, **kwargs):
@@ -408,7 +411,26 @@ class setIpTarget(APIView):
 
 
 
+class getFasesSW12(APIView):
+    ''' Lectura del Controlador HT200 '''
+    def get(self, request, *args, **kwargs):
+        try:
+           
+            result = controlador_sw12.getFases()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
+'''
+funciones de lectura del controlador sw12
+'''
 
 
 

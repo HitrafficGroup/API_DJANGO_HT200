@@ -1,6 +1,6 @@
 import socket
 import sys  
-import tramas_sw12 
+from scripts import tramas_sw12
 
 
 
@@ -15,12 +15,16 @@ class MySocketSW12:
         self.__port = 4001
         self.ip_target = ip_target
         self.__tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.__tcpSocket.settimeout(10)
         self.__connect()
+     
     def __connect(self):
         try:
             self.__tcpSocket.connect((self.ip_target,self.__port))
-        except socket.error:
-            sys.exit()
+            print("Nos conectamos al socket sw12")
+        except socket.timeout:
+            print("tiempo de espera sobrepasado")
+            self.disconnect()
     def readPendingDatagrams(self,__frame):
         self.__tcpSocket.sendto(__frame,(self.ip_target,self.__port))
         reply = self.__tcpSocket.recv(1024)
@@ -36,14 +40,26 @@ class MySocketSW12:
     def getFases(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.fases_frame)):
+                print(self.rx_var_formated)
                 print("Fases Obtenidas")
                 fases_data = []
                 counter = 0
-                for i in self.rx_var_formated:
+                for i in range(16):
+                    fase = self.rx_var_formated[i]
                     counter +=1
-                    fase = {'id':'fase-{}'.format(counter),'value':i}
+                    fase = {'id':'fase-{}'.format(counter),'value':fase}
                     fases_data.append(fase)
-                return fases_data
+                data_json = {
+                    'data':fases_data,
+                    'status':True
+                }
+                return data_json
+            else:
+                data_json = {
+                    'data':[],
+                    'status':False
+                }
+                return data_json
         except socket.error:
             sys.exit()
     def getPlan1(self):
@@ -385,6 +401,7 @@ class MySocketSW12:
                 sys.exit()
     def disconnect(self):
         self.__tcpSocket.close()
+        print("Nos desconectamos del socket sw12")
 
 
 # tcp_client = MySocketSW12('192.168.2.97')
