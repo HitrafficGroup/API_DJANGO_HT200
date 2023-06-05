@@ -33,4 +33,17 @@ urlpatterns = [
      #funciones de lectura sw12
      path('getFasesSW12', getFasesSW12.as_view()),
      path('getOrdinaryScheduleSW12', getOrdinaryScheduleSW12.as_view()),
+     path('getWeekendScheduleSW12', getWeekendScheduleSW12.as_view()),
+     path('getFestivalScheduleSW12', getFestivalScheduleSW12.as_view()),
+     path('getGruposSW12', getGruposSW12.as_view()),
+     path('getGreenConflictSW12', getGreenConflictSW12.as_view()),
+     path('getOperativeParamsSW12', getOperativeParamsSW12.as_view()),
+     path('getPlan1SW12', getPlan1SW12.as_view()),
+     path('getPlan2SW12', getPlan2SW12.as_view()),
+     path('getPlan3SW12', getPlan3SW12.as_view()),
+     path('getPlan4SW12', getPlan4SW12.as_view()),
+     path('getPlan5SW12', getPlan5SW12.as_view()),
+     path('getPlan6SW12', getPlan6SW12.as_view()),
+     path('getPlan7SW12', getPlan7SW12.as_view()),
+     path('getPlan8SW12', getPlan8SW12.as_view()),
 ]

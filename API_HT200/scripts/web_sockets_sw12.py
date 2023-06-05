@@ -53,8 +53,13 @@ class MySocketSW12:
                     'status':False
                 }
                 return data_json
-        except socket.error:
-            sys.exit()
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {
+                    'data':[],
+                    'status':False
+                }
+            return data_json
     def getPlan1(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.plan1_frame)):
@@ -67,11 +72,27 @@ class MySocketSW12:
                     counter +=1
                     duracion = self.rx_var_formated[counter]
                     counter +=1
-                    plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
+                    plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                return plan_data
-        except socket.error:
-            sys.exit()
+                data_json = {
+                    'data':plan_data,
+                    'status':True
+                }
+                return data_json
+            else:
+                data_json = {
+                    'data':plan_data,
+                    'status':True
+                }
+                return data_json
+        except:
+            print('tiempo de espera sobrepasado')
+            data_json = {
+                    'data':[],
+                    'status':False
+                }
+            return data_json
+
     def getPlan2(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.plan2_frame)):
@@ -86,9 +107,24 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                return plan_data
-        except socket.error:
-                sys.exit()
+                data_json = {
+                    'data':plan_data,
+                    'status':True
+                }
+                return data_json
+            else:
+                data_json = {
+                    'data':plan_data,
+                    'status':True
+                }
+                return data_json
+        except:
+            print('tiempo de espera sobrepasado')
+            data_json = {
+                        'data':[],
+                        'status':False
+                    }
+            return data_json
     def getPlan3(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.plan3_frame)):
@@ -101,11 +137,26 @@ class MySocketSW12:
                     counter +=1
                     duracion = self.rx_var_formated[counter]
                     counter +=1
-                    plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
+                    plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                return plan_data
-        except socket.error:
-            sys.exit()
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                        }
+                return data_json
+            else:
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                            }
+                return data_json
+        except:
+                print('tiempo de espera sobrepasado')
+                data_json = {
+                            'data':[],
+                            'status':False
+                            }
+                return data_json
 
     def getPlan4(self):
         try:
@@ -121,14 +172,29 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                return plan_data
-        except socket.error:
-            sys.exit()
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                        }
+                return data_json
+            else:
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                            }
+                return data_json
+        except:
+                print('tiempo de espera sobrepasado')
+                data_json = {
+                            'data':[],
+                            'status':False
+                            }
+                return data_json
 
     def getPlan5(self):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan4_frame)):
-                print("Plan4 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan5_frame)):
+                print("Plan5 Obtenido")
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -139,15 +205,30 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                return plan_data
-        except socket.error:
-            sys.exit()
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                        }
+                return data_json
+            else:
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                            }
+                return data_json
+        except:
+                print('tiempo de espera sobrepasado')
+                data_json = {
+                            'data':[],
+                            'status':False
+                            }
+                return data_json
 
 
     def getPlan6(self):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan4_frame)):
-                print("Plan4 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan6_frame)):
+                print("Plan6 Obtenido")
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -158,14 +239,29 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                return plan_data
-        except socket.error:
-            sys.exit()
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                        }
+                return data_json
+            else:
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                            }
+                return data_json
+        except:
+                print('tiempo de espera sobrepasado')
+                data_json = {
+                            'data':[],
+                            'status':False
+                            }
+                return data_json
 
     def getPlan7(self):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan4_frame)):
-                print("Plan4 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan7_frame)):
+                print("Plan7 Obtenido")
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -176,14 +272,29 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                return plan_data
-        except socket.error:
-            sys.exit()
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                        }
+                return data_json
+            else:
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                            }
+                return data_json
+        except:
+                print('tiempo de espera sobrepasado')
+                data_json = {
+                            'data':[],
+                            'status':False
+                            }
+                return data_json
 
     def getPlan8(self):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan4_frame)):
-                print("Plan4 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan8_frame)):
+                print("Plan8 Obtenido")
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -194,10 +305,24 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                return plan_data
-        except socket.error:
-            sys.exit()
-
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                        }
+                return data_json
+            else:
+                data_json = {
+                            'data':plan_data,
+                            'status':True
+                            }
+                return data_json
+        except:
+                print('tiempo de espera sobrepasado')
+                data_json = {
+                            'data':[],
+                            'status':False
+                            }
+                return data_json
 
     def getOrdinarySchedule(self):
         try:
@@ -235,8 +360,14 @@ class MySocketSW12:
                     'status':False
                 }
                 return data_json
-        except socket.error:
-            sys.exit()
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {
+                        'data':[],
+                        'status':False
+                    }
+            return data_json
+
     def getWeekendSchedule(self):
                 try:
                     if(self.readPendingDatagrams(tramas_sw12.semana_frame)):
@@ -245,25 +376,40 @@ class MySocketSW12:
                         counter = 1
                         for i in range(16):
                             num = i
-                            tiempo = self.rx_var_formated[counter]
+                            hora = self.rx_var_formated[counter]
                             counter +=1
-                            modo = self.rx_var_formated[counter]
+                            minuto = self.rx_var_formated[counter]
                             counter +=1
-                            plan = self.rx_var_formated[counter]
+                            mod = self.rx_var_formated[counter]
                             counter +=1
                             desfase = self.rx_var_formated[counter]
                             counter +=1
                             horario = {
                                         'id':'horario-{}'.format(num),
-                                        'tiempo':tiempo,
-                                        'modo':modo,
-                                        'plan':plan,
+                                        'hora':hora,
+                                        'minuto':minuto,
+                                        'modo':mod,
                                         'desfase':desfase,
                                     }
                             horarios_data.append(horario)
-                        return horarios_data
-                except socket.error:
-                    sys.exit()
+                        data_json = {
+                        'data':horarios_data,
+                        'status':True
+                            }
+                        return data_json
+                    else:
+                        data_json = {
+                            'data':[],
+                            'status':False
+                        }
+                        return data_json
+                except socket.timeout:
+                    print('tiempo de espera sobrepasado')
+                    data_json = {
+                                'data':[],
+                                'status':False
+                            }
+                    return data_json
     def getFestivalSchedule(self):
             try:
                 if(self.readPendingDatagrams(tramas_sw12.festivo_frame)):
@@ -272,31 +418,46 @@ class MySocketSW12:
                     counter = 1
                     for i in range(16):
                         num = i
-                        tiempo = self.rx_var_formated[counter]
+                        hora = self.rx_var_formated[counter]
                         counter +=1
-                        modo = self.rx_var_formated[counter]
+                        minuto = self.rx_var_formated[counter]
                         counter +=1
-                        plan = self.rx_var_formated[counter]
+                        mod = self.rx_var_formated[counter]
                         counter +=1
                         desfase = self.rx_var_formated[counter]
                         counter +=1
                         horario = {
                                     'id':'horario-{}'.format(num),
-                                    'tiempo':tiempo,
-                                    'modo':modo,
-                                    'plan':plan,
+                                    'hora':hora,
+                                    'minuto':minuto,
+                                    'modo':mod,
                                     'desfase':desfase,
                                 }
                         horarios_data.append(horario)
-                    return horarios_data
-            except socket.error:
-                sys.exit()
+                    data_json = {
+                        'data':horarios_data,
+                        'status':True
+                            }
+                    return data_json
+                else:
+                    data_json = {
+                            'data':[],
+                            'status':False
+                        }
+                    return data_json
+            except socket.timeout:
+                print('tiempo de espera sobrepasado')
+                data_json = {
+                                'data':[],
+                                'status':False
+                            }
+                return data_json
 
     def getGrupos(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.grupos_frame)):
                 print("Obteniendo Grupos")
-                horarios_data = []
+                grupos = []
                 print(self.rx_var_formated)
                 counter = 1
                 for i in range(4):
@@ -307,16 +468,30 @@ class MySocketSW12:
                                 'id':'grupo-{}'.format(num),
                                 'value':valor
                                 }
-                    horarios_data.append(horario)
-                return horarios_data
-        except socket.error:
-            sys.exit()
-
+                    grupos.append(horario)
+                data_json = {
+                        'data':grupos,
+                        'status':True
+                            }
+                return data_json
+            else:
+                data_json = {
+                            'data':[],
+                            'status':False
+                        }
+                return data_json
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {
+                        'data':[],
+                        'status':False
+                        }
+            return data_json
     def getGreenConflict(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.grenn_conflict)):
                 print("Obteniendo Grupos")
-                horarios_data = []
+                green_conflict = []
                 print(self.rx_var_formated)
                 counter = 0
                 for i in range(4):
@@ -327,16 +502,30 @@ class MySocketSW12:
                                 'id':'grupo-{}'.format(num+1),
                                 'value':valor
                                 }
-                    horarios_data.append(horario)
-                    return horarios_data
-        except socket.error:
-            sys.exit()
-
+                    green_conflict.append(horario)
+                data_json = {
+                            'data':green_conflict,
+                            'status':True
+                            }
+                return data_json
+            else:
+                print('tiempo de espera sobrepasado')
+                data_json = {
+                            'data':[],
+                            'status':False
+                            }
+                return data_json
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {
+                        'data':[],
+                        'status':False
+                        }
+            return data_json
     def getOperativeParams(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.operative_frame)):
                 print("Obteniendo parametros Operativos")
-
                 params ={
                             'destello_al_encender':self.rx_var_formated[1],
                             'tiempo_en_rojo_al_encender':self.rx_var_formated[2],
@@ -346,9 +535,24 @@ class MySocketSW12:
                             'tiempo_todo_rojo':self.rx_var_formated[6],
                             'min_verde':self.rx_var_formated[7],
                         }
-                return params
-        except socket.error:
-            sys.exit()
+                data_json = {
+                            'data':params,
+                            'status':True
+                            }
+                return data_json
+            else:
+                data_json = {
+                            'data':[],
+                            'status':True
+                            }
+                return data_json
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {
+                        'data':[],
+                        'status':False
+                        }
+            return data_json
 
     def getTimeController(self):
         try:

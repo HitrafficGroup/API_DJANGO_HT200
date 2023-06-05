@@ -416,7 +416,6 @@ funciones de lectura del controlador sw12
 '''
 
 class getFasesSW12(APIView):
-    ''' Lectura del Controlador HT200 '''
     def get(self, request, *args, **kwargs):
         try:
             result = controlador_sw12.getFases()
@@ -433,7 +432,6 @@ class getFasesSW12(APIView):
 
 
 class getOrdinaryScheduleSW12(APIView):
-    ''' Lectura del Controlador HT200 '''
     def get(self, request, *args, **kwargs):
         try:
             result = controlador_sw12.getOrdinarySchedule()
@@ -442,6 +440,209 @@ class getOrdinaryScheduleSW12(APIView):
             else:
                 return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
             
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class getWeekendScheduleSW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getWeekendSchedule()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+
+
+class getFestivalScheduleSW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getFestivalSchedule()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class getGruposSW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getGrupos()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        
+
+
+class getGreenConflictSW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getGreenConflict()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class getOperativeParamsSW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getOperativeParams()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class getPlan1SW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getPlan1()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+
+class getPlan2SW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getPlan2()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class getPlan3SW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getPlan3()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+class getPlan4SW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getPlan4()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        
+
+class getPlan5SW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getPlan5()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class getPlan6SW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getPlan6()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+
+class getPlan7SW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getPlan7()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class getPlan8SW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getPlan8()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         except Exception as e:
             print(e)
             print("algo ocurrio mal")
