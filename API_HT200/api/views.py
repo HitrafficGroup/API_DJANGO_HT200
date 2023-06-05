@@ -648,3 +648,47 @@ class getPlan8SW12(APIView):
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
             return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        
+
+class getTimeControllerSW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getTimeController()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class getSpecialDaysSW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getSpecialDays()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+class getEntradasSW12(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            result = controlador_sw12.getEntradas()
+            if result['status']:
+                return Response(result['data'],status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "problema en el controlador"},status=status.HTTP_503_SERVICE_UNAVAILABLE)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)

@@ -46,4 +46,7 @@ urlpatterns = [
      path('getPlan6SW12', getPlan6SW12.as_view()),
      path('getPlan7SW12', getPlan7SW12.as_view()),
      path('getPlan8SW12', getPlan8SW12.as_view()),
+     path('getTimeControllerSW12', getTimeControllerSW12.as_view()),
+     path('getSpecialDaysSW12', getSpecialDaysSW12.as_view()),
+     path('getEntradasSW12', getEntradasSW12.as_view()),
 ]

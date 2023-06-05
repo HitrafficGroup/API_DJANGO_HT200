@@ -379,7 +379,6 @@ class MySocketSW12:
                 g2_bin = f'{self.rx_var_formated[1]:04b}'
                 g3_bin = f'{self.rx_var_formated[2]:04b}'
                 green_conflict = {'fila-1':g1_bin,'fila-2':g2_bin,'fila-3':g3_bin,'ch3':bin_format[2],'ch2':bin_format[3],'ch1':bin_format[7]}
-         
                 data_json = {'data':green_conflict,'status':True}
                 return data_json
             else:
@@ -418,18 +417,16 @@ class MySocketSW12:
             if(self.readPendingDatagrams(tramas_sw12.time_frame)):
                 print("Obteniendo Tiempo del Controlador")
                 print(self.rx_var_formated)
-                        # params ={
-                        #     'destello_al_encender':self.rx_var_formated[1],
-                        #     'tiempo_en_rojo_al_encender':self.rx_var_formated[2],
-                        #     'destello_verde_peatonal':self.rx_var_formated[3],
-                        #     'destello_verde_vehicular':self.rx_var_formated[4],
-                        #     'tiempo_amarillo_vehicular':self.rx_var_formated[5],
-                        #     'tiempo_todo_rojo':self.rx_var_formated[6],
-                        #     'min_verde':self.rx_var_formated[7],
-                        # }
-                        # return params
-        except socket.error:
-            sys.exit()
+                data_json = {'data':self.rx_var_formated,'status':True}
+                return data_json
+            else:
+                data_json = {'data':[],'status':True}
+                return data_json
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
+
 
 
     def getSpecialDays(self):
@@ -437,35 +434,71 @@ class MySocketSW12:
             if(self.readPendingDatagrams(tramas_sw12.especial_frame)):
                 print("Obteniendo Tiempo del Controlador")
                 print(self.rx_var_formated)
-                        # params ={
-                        #     'destello_al_encender':self.rx_var_formated[1],
-                        #     'tiempo_en_rojo_al_encender':self.rx_var_formated[2],
-                        #     'destello_verde_peatonal':self.rx_var_formated[3],
-                        #     'destello_verde_vehicular':self.rx_var_formated[4],
-                        #     'tiempo_amarillo_vehicular':self.rx_var_formated[5],
-                        #     'tiempo_todo_rojo':self.rx_var_formated[6],
-                        #     'min_verde':self.rx_var_formated[7],
-                        # }
-                        # return params
-        except socket.error:
-            sys.exit()
+                fecha_data = []
+                counter = 1
+                for i in range(16):
+                    mes = self.rx_var_formated[counter]
+                    dia = self.rx_var_formated[counter +1]
+                    tipo = self.rx_var_formated[counter +2]
+                    fecha = {'id':'date-'.format(i+1),'mes':mes,'dia':dia,'tipo':tipo}
+                    counter +=3
+                    if mes != 0 and dia != 0 and tipo != 0:
+                        fecha_data.append(fecha)
+                fines_semana = self.rx_var_formated.pop()
+                bin_format = f'{fines_semana:08b}'
+                domingo = bool(int(bin_format[7]))
+                lunes = bool(int(bin_format[6]))
+                martes = bool(int(bin_format[5]))
+                miercoles = bool(int(bin_format[4]))
+                jueves = bool(int(bin_format[3]))
+                viernes = bool(int(bin_format[2]))
+                sabado = bool(int(bin_format[1]))
+                fines_semana_formated = {
+                    'lunes':lunes,
+                    'martes':martes,
+                    'miercoles':miercoles,
+                    'jueves':jueves,
+                    'viernes':viernes,
+                    'sabado':sabado,
+                    'domingo':domingo
+                }
+                data_json = {'data':{'dias':fecha_data,'fines_semana':fines_semana_formated},'status':True}
+                return data_json
+            else:
+                data_json = {'data':[],'status':True}
+                return data_json
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
+
     def getEntradas(self):
             try:
                 if(self.readPendingDatagrams(tramas_sw12.entradas_frame)):
                     print("Obteniendo Entradas")
                     print(self.rx_var_formated)
-                            # params ={
-                            #     'destello_al_encender':self.rx_var_formated[1],
-                            #     'tiempo_en_rojo_al_encender':self.rx_var_formated[2],
-                            #     'destello_verde_peatonal':self.rx_var_formated[3],
-                            #     'destello_verde_vehicular':self.rx_var_formated[4],
-                            #     'tiempo_amarillo_vehicular':self.rx_var_formated[5],
-                            #     'tiempo_todo_rojo':self.rx_var_formated[6],
-                            #     'min_verde':self.rx_var_formated[7],
-                            # }
-                            # return params
-            except socket.error:
-                sys.exit()
+                    entradas_data = []
+                    counter = 1
+                    for i  in range(4):
+                        value = f'{self.rx_var_formated[counter]:08b}'
+                        check_aux = bool(int(value[2]))
+                        duracion = self.rx_var_formated[counter+1]
+                        paso = value[4:8]
+                        int_paso = int(paso, 2) + 1
+                        counter +=2
+                        entrada = {'id':'entrada-{}'.format(i+1),'check':check_aux,'duracion':duracion,'paso':int_paso}
+                        entradas_data.append(entrada)
+                    data_json = {'data':entradas_data,'status':True}
+                    return data_json
+                else:
+                    data_json = {'data':[],'status':True}
+                    return data_json
+            except socket.timeout:
+                print('tiempo de espera sobrepasado')
+                data_json = {'data':[],'status':False}
+                return data_json
+
+
 
 
 
