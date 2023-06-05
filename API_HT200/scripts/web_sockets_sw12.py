@@ -42,23 +42,14 @@ class MySocketSW12:
                     counter +=1
                     fase = {'id':'fase-{}'.format(counter),'value':fase}
                     fases_data.append(fase)
-                data_json = {
-                    'data':fases_data,
-                    'status':True
-                }
+                data_json = {'data':fases_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                    'data':[],
-                    'status':False
-                }
+                data_json = {'data':[],'status':False}
                 return data_json
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {
-                    'data':[],
-                    'status':False
-                }
+            data_json = {'data':[],'status':False}
             return data_json
     def getPlan1(self):
         try:
@@ -74,23 +65,14 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                data_json = {
-                    'data':plan_data,
-                    'status':True
-                }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                    'data':plan_data,
-                    'status':True
-                }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
         except:
             print('tiempo de espera sobrepasado')
-            data_json = {
-                    'data':[],
-                    'status':False
-                }
+            data_json = {'data':[],'status':False}
             return data_json
 
     def getPlan2(self):
@@ -107,23 +89,14 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                data_json = {
-                    'data':plan_data,
-                    'status':True
-                }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                    'data':plan_data,
-                    'status':True
-                }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
         except:
             print('tiempo de espera sobrepasado')
-            data_json = {
-                        'data':[],
-                        'status':False
-                    }
+            data_json = {'data':[],'status':False}
             return data_json
     def getPlan3(self):
         try:
@@ -139,23 +112,14 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                        }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                            }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
         except:
                 print('tiempo de espera sobrepasado')
-                data_json = {
-                            'data':[],
-                            'status':False
-                            }
+                data_json = {'data':[],'status':False}
                 return data_json
 
     def getPlan4(self):
@@ -172,23 +136,14 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                        }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                            }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
         except:
                 print('tiempo de espera sobrepasado')
-                data_json = {
-                            'data':[],
-                            'status':False
-                            }
+                data_json = {'data':[],'status':False}
                 return data_json
 
     def getPlan5(self):
@@ -205,23 +160,14 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                        }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                            }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
         except:
                 print('tiempo de espera sobrepasado')
-                data_json = {
-                            'data':[],
-                            'status':False
-                            }
+                data_json = {'data':[],'status':False}
                 return data_json
 
 
@@ -239,23 +185,14 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                        }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                            }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
         except:
                 print('tiempo de espera sobrepasado')
-                data_json = {
-                            'data':[],
-                            'status':False
-                            }
+                data_json = {'data':[],'status':False}
                 return data_json
 
     def getPlan7(self):
@@ -272,23 +209,14 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                        }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                            }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
         except:
                 print('tiempo de espera sobrepasado')
-                data_json = {
-                            'data':[],
-                            'status':False
-                            }
+                data_json = {'data':[],'status':False}
                 return data_json
 
     def getPlan8(self):
@@ -305,23 +233,14 @@ class MySocketSW12:
                     counter +=1
                     plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                        }
+                data_json = { 'data':plan_data, 'status':True}
                 return data_json
             else:
-                data_json = {
-                            'data':plan_data,
-                            'status':True
-                            }
+                data_json = {'data':plan_data,'status':True}
                 return data_json
         except:
                 print('tiempo de espera sobrepasado')
-                data_json = {
-                            'data':[],
-                            'status':False
-                            }
+                data_json = {'data':[],'status':False}
                 return data_json
 
     def getOrdinarySchedule(self):
@@ -349,23 +268,14 @@ class MySocketSW12:
                                 'desfase':desfase,
                             }
                     horarios_data.append(horario)
-                data_json = {
-                        'data':horarios_data,
-                        'status':True
-                    }
+                data_json = {'data':horarios_data,'status':True}
                 return data_json
             else:
-                data_json = {
-                    'data':[],
-                    'status':False
-                }
+                data_json = {'data':[],'status':False}
                 return data_json
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {
-                        'data':[],
-                        'status':False
-                    }
+            data_json = {'data':[],'status':False}
             return data_json
 
     def getWeekendSchedule(self):
@@ -392,23 +302,14 @@ class MySocketSW12:
                                         'desfase':desfase,
                                     }
                             horarios_data.append(horario)
-                        data_json = {
-                        'data':horarios_data,
-                        'status':True
-                            }
+                        data_json = {'data':horarios_data,'status':True }
                         return data_json
                     else:
-                        data_json = {
-                            'data':[],
-                            'status':False
-                        }
+                        data_json = {'data':[],'status':False}
                         return data_json
                 except socket.timeout:
                     print('tiempo de espera sobrepasado')
-                    data_json = {
-                                'data':[],
-                                'status':False
-                            }
+                    data_json = {'data':[],'status':False}
                     return data_json
     def getFestivalSchedule(self):
             try:
@@ -434,23 +335,14 @@ class MySocketSW12:
                                     'desfase':desfase,
                                 }
                         horarios_data.append(horario)
-                    data_json = {
-                        'data':horarios_data,
-                        'status':True
-                            }
+                    data_json = {'data':horarios_data,'status':True}
                     return data_json
                 else:
-                    data_json = {
-                            'data':[],
-                            'status':False
-                        }
+                    data_json = {'data':[],'status':False}
                     return data_json
             except socket.timeout:
                 print('tiempo de espera sobrepasado')
-                data_json = {
-                                'data':[],
-                                'status':False
-                            }
+                data_json = {'data':[],'status':False}
                 return data_json
 
     def getGrupos(self):
@@ -464,28 +356,16 @@ class MySocketSW12:
                     num = i
                     valor = self.rx_var_formated[counter]
                     counter +=1
-                    horario = {
-                                'id':'grupo-{}'.format(num),
-                                'value':valor
-                                }
+                    horario = {'id':'grupo-{}'.format(num),'value':valor}
                     grupos.append(horario)
-                data_json = {
-                        'data':grupos,
-                        'status':True
-                            }
+                data_json = {'data':grupos,'status':True}
                 return data_json
             else:
-                data_json = {
-                            'data':[],
-                            'status':False
-                        }
+                data_json = {'data':[],'status':False}
                 return data_json
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {
-                        'data':[],
-                        'status':False
-                        }
+            data_json = {'data':[],'status':False}
             return data_json
     def getGreenConflict(self):
         try:
@@ -494,33 +374,21 @@ class MySocketSW12:
                 green_conflict = []
                 print(self.rx_var_formated)
                 counter = 0
-                for i in range(4):
-                    num = i
-                    valor = self.rx_var_formated[counter]
-                    counter +=1
-                    horario = {
-                                'id':'grupo-{}'.format(num+1),
-                                'value':valor
-                                }
-                    green_conflict.append(horario)
-                data_json = {
-                            'data':green_conflict,
-                            'status':True
-                            }
+                bin_format = f'{self.rx_var_formated[3]:08b}'
+                g1_bin = f'{self.rx_var_formated[0]:04b}'
+                g2_bin = f'{self.rx_var_formated[1]:04b}'
+                g3_bin = f'{self.rx_var_formated[2]:04b}'
+                green_conflict = {'fila-1':g1_bin,'fila-2':g2_bin,'fila-3':g3_bin,'ch3':bin_format[2],'ch2':bin_format[3],'ch1':bin_format[7]}
+         
+                data_json = {'data':green_conflict,'status':True}
                 return data_json
             else:
                 print('tiempo de espera sobrepasado')
-                data_json = {
-                            'data':[],
-                            'status':False
-                            }
+                data_json = {'data':[],'status':False}
                 return data_json
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {
-                        'data':[],
-                        'status':False
-                        }
+            data_json = {'data':[],'status':False}
             return data_json
     def getOperativeParams(self):
         try:
@@ -535,23 +403,14 @@ class MySocketSW12:
                             'tiempo_todo_rojo':self.rx_var_formated[6],
                             'min_verde':self.rx_var_formated[7],
                         }
-                data_json = {
-                            'data':params,
-                            'status':True
-                            }
+                data_json = {'data':params,'status':True}
                 return data_json
             else:
-                data_json = {
-                            'data':[],
-                            'status':True
-                            }
+                data_json = {'data':[],'status':True}
                 return data_json
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {
-                        'data':[],
-                        'status':False
-                        }
+            data_json = {'data':[],'status':False}
             return data_json
 
     def getTimeController(self):
