@@ -744,10 +744,10 @@ class MySocketSW12:
                 num +=1;
             gbtx[num]= 192 #frame tail
 
-            n = 0
-            for i in list(gbtx):
-                print(" {} trama -> {}".format(i,n))
-                n+=1
+            # n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(20)
             __tcpSocket.connect((self.ip_target,self.__port))
@@ -763,6 +763,84 @@ class MySocketSW12:
             print('tiempo de espera sobrepasado')
             data_json = {'data':[],'status':False}
             return data_json
+    def setPlanes(self,__data):
+        try:
+            gbtx = bytearray(38)
+            gbtx[0]=192
+            gbtx[1]=16
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[4]=3
+            gbtx[5]=1
+            gbtx[6]=1
+            gbtx[7]=0
+            gbtx[8]=129
+            gbtx[9]=8
+            gbtx[10]=25
+            temp_var = []
+            num = 11;
+            temp_num = 25
+            for x in __data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+     
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+
+            # n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
+            # return True
+            __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            __tcpSocket.settimeout(20)
+            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.sendall(gbtx)
+            reply = __tcpSocket.recv(1024)
+            __tcpSocket.close
+            data= list(reply)
+            if data[8]==132:
+                return True
+            else:
+                return False
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
+
+
+
+
 
 
 

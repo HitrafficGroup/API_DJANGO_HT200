@@ -54,4 +54,5 @@ urlpatterns = [
      path('postFasesSW12',postFasesSW12.as_view()),
      path('postGruposSW12',postGruposSW12.as_view()),
      path('postGreenConflictSW12',postGreenConflictSW12.as_view()),
+     path('postPlanesSW12',postPlanesSW12.as_view()),
 ]
