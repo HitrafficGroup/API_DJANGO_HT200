@@ -7,7 +7,6 @@ import json
 
 '''
 funciones de lectura del controlador ht200
-
 '''
 
 controlador_ht200 = web_sockets.MySocket('192.168.2.122')
@@ -707,4 +706,63 @@ class getErroresSW12(APIView):
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
             return Response(result,status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+'''
+    Funciones de Escritura del controlador SW12
+'''
+
+
+class postFasesSW12(APIView):
+    def post(self, request, *args, **kwargs):
+        if len(request.body) == 0 :
+            raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
+        json_data = json.loads(request.body)
+        try:
+            result = controlador_sw12.setFases(json_data['trama'])
+            if result:
+                print('envio correcto')
+                return Response(result,status=status.HTTP_200_OK)
+            else:
+                print('envio incorrecto')
+                return Response(result,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
         
+class postGruposSW12(APIView):
+    def post(self, request, *args, **kwargs):
+        if len(request.body) == 0 :
+            raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
+        json_data = json.loads(request.body)
+        try:
+            result = controlador_sw12.setGrupos(json_data['trama'])
+            if result:
+                print('envio correcto')
+                return Response(result,status=status.HTTP_200_OK)
+            else:
+                print('envio incorrecto')
+                return Response(result,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
+
+class postGreenConflictSW12(APIView):
+    def post(self, request, *args, **kwargs):
+        if len(request.body) == 0 :
+            raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
+        json_data = json.loads(request.body)
+        try:
+            result = controlador_sw12.setGreenConflict(json_data['trama'])
+            if result:
+                print('envio correcto')
+                return Response(result,status=status.HTTP_200_OK)
+            else:
+                print('envio incorrecto')
+                return Response(result,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 

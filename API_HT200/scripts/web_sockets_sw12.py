@@ -370,7 +370,7 @@ class MySocketSW12:
     def getGreenConflict(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.grenn_conflict)):
-                print("Obteniendo Grupos")
+                print("Obteniendo conflictos verde")
                 green_conflict = []
                 print(self.rx_var_formated)
                 counter = 0
@@ -539,11 +539,233 @@ class MySocketSW12:
             data_json = {'data':[],'status':False}
             return data_json
 
+    def setFases(self,__data):
+        try:
+            gbtx = bytearray(29)
+            gbtx[0]=192
+            gbtx[1]=16
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[4]=3
+            gbtx[5]=1
+            gbtx[6]=1
+            gbtx[7]=0
+            gbtx[8]=129
+            gbtx[9]=7
+            gbtx[10]=16
+            temp_var = []
+            num = 11;
+            temp_num = 16
+            for x in __data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+     
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+
+            # n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
+            # return True
+            __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            __tcpSocket.settimeout(10)
+            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.sendall(gbtx)
+            reply = __tcpSocket.recv(1024)
+            __tcpSocket.close
+            data= list(reply)
+            if data[8]==132:
+                return True
+            else:
+                return False
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
+    
+    
+    def setGrupos(self,__data):
+        try:
+            gbtx = bytearray(18)
+            gbtx[0]=192
+            gbtx[1]=16
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[4]=3
+            gbtx[5]=1
+            gbtx[6]=1
+            gbtx[7]=0
+            gbtx[8]=129
+            gbtx[9]=6
+            gbtx[10]=5
+            gbtx[11]=4
+            temp_var = []
+            num = 12;
+            temp_num = 4
+            for x in __data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+     
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+
+            # n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
+            __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            __tcpSocket.settimeout(10)
+            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.sendall(gbtx)
+            reply = __tcpSocket.recv(1024)
+            __tcpSocket.close
+            data= list(reply)
+            if data[8]==132:
+                return True
+            else:
+                return False
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
+
+    def setGreenConflict(self,__data):
+        try:
+            gbtx = bytearray(20)
+            gbtx[0]=192
+            gbtx[1]=16
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[4]=3
+            gbtx[5]=1
+            gbtx[6]=1
+            gbtx[7]=0
+            gbtx[8]=129
+            gbtx[9]=17
+            gbtx[10]=4
+            temp_var = []
+            num = 11;
+            temp_num = 4
+            for x in __data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+     
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+
+            n = 0
+            for i in list(gbtx):
+                print(" {} trama -> {}".format(i,n))
+                n+=1
+            __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            __tcpSocket.settimeout(20)
+            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.sendall(gbtx)
+            reply = __tcpSocket.recv(1024)
+            __tcpSocket.close
+            data= list(reply)
+            if data[8]==132:
+                return True
+            else:
+                return False
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
 
 
 
 
-# tcp_client = MySocketSW12('192.168.2.97')
-# datos = tcp_client.getEntradas()
-# print(datos)
-# tcp_client.disconnect()
+
+

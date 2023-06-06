@@ -50,4 +50,8 @@ urlpatterns = [
      path('getSpecialDaysSW12', getSpecialDaysSW12.as_view()),
      path('getEntradasSW12', getEntradasSW12.as_view()),
      path('getErroresSW12', getErroresSW12.as_view()),
+     #funciones de escritura sw12
+     path('postFasesSW12',postFasesSW12.as_view()),
+     path('postGruposSW12',postGruposSW12.as_view()),
+     path('postGreenConflictSW12',postGreenConflictSW12.as_view()),
 ]
