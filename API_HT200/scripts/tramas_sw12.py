@@ -305,6 +305,26 @@ entradas_frame[11] =0
 entradas_frame[12] =214
 entradas_frame[13] =192
 
+#errores frame
+
+errores_frame = bytearray(14)
+errores_frame[0] =192
+errores_frame[1] =16
+errores_frame[2] =32
+errores_frame[3] =16
+errores_frame[4] =3
+errores_frame[5] =1
+errores_frame[6] =1
+errores_frame[7] =0
+errores_frame[8] =128
+errores_frame[9] =11
+errores_frame[10] =1
+errores_frame[11] =255
+errores_frame[12] =208
+errores_frame[13] =192
+
+
+
 
 
 

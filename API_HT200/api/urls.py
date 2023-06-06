@@ -49,4 +49,5 @@ urlpatterns = [
      path('getTimeControllerSW12', getTimeControllerSW12.as_view()),
      path('getSpecialDaysSW12', getSpecialDaysSW12.as_view()),
      path('getEntradasSW12', getEntradasSW12.as_view()),
+     path('getErroresSW12', getErroresSW12.as_view()),
 ]

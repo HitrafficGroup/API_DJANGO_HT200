@@ -497,6 +497,47 @@ class MySocketSW12:
                 print('tiempo de espera sobrepasado')
                 data_json = {'data':[],'status':False}
                 return data_json
+    
+    def getErrores(self):
+        try:
+            if(self.readPendingDatagrams(tramas_sw12.errores_frame)):
+                print("Obteniendo Errores")
+                errores_data = []
+                aux = self.rx_var_formated
+                longitud_trama = len(self.rx_var_formated) -2
+                cantidad_logs = int(longitud_trama/16)
+                counter = 2
+                for i in range(cantidad_logs):
+                    segundo = aux[counter]
+                    minuto = aux[counter+1]
+                    hora = aux[counter+2]
+                    dia = aux[counter+3]
+                    fecha = aux[counter+4]
+                    month = aux[counter+5]
+                    year = aux[counter+6]
+                    mensaje = [aux[counter+7],aux[counter+8],aux[counter+9],aux[counter+10],aux[counter+11],aux[counter+12],aux[counter+13],aux[counter+14],aux[counter+15]]
+                    error = {
+                            'id':'error-{}'.format(i),
+                            'seconds':segundo,
+                            'minute':minuto,
+                            'hour':hora,
+                            'day':dia,
+                            'date':fecha,
+                            'month':month,
+                            'year':year,
+                            'message':mensaje
+                            }
+                    errores_data.append(error)
+                    counter +=16
+                data_json = {'data':errores_data,'status':True}
+                return data_json
+            else:
+                data_json = {'data':[],'status':True}
+                return data_json
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
 
 
 
