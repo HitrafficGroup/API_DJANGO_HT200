@@ -58,4 +58,5 @@ urlpatterns = [
      path('postOtrosParametrosSW12',postOtrosParametrosSW12.as_view()),
      path('postHorariosSW12',postHorariosSW12.as_view()),
      path('postDiasEspecialesSW12',postDiasEspecialesSW12.as_view()),
+     path('postEntradasSW12',postEntradasSW12.as_view()),
 ]
