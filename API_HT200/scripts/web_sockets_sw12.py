@@ -20,7 +20,7 @@ class MySocketSW12:
         __tcpSocket.connect((self.ip_target,self.__port))
         __tcpSocket.sendall(__frame)
         reply = __tcpSocket.recv(1024)
-        __tcpSocket.close
+        __tcpSocket.close()
         self.rx_var_formated = []
         data = list(reply)
         if (data[8]== 131):
@@ -418,10 +418,31 @@ class MySocketSW12:
             if(self.readPendingDatagrams(tramas_sw12.time_frame)):
                 print("Obteniendo Tiempo del Controlador")
                 print(self.rx_var_formated)
-                data_json = {'data':self.rx_var_formated,'status':True}
+                dias_semana = self.rx_var_formated[3]
+                dias = ['none','domingo','lunes','martes','miercoles','jueves','viernes','sabado']
+                bin_format = f'{dias_semana:08b}'
+                dia = ''
+                index = 0
+                #aqui podriamos tener problemas
+                for i in bin_format:
+                    if i == '1':
+                        dia = dias[index]
+                    index +=1
+                time_data = {
+                            'seconds':self.rx_var_formated[0],
+                            'minutes': self.rx_var_formated[1],
+                            'hours':self.rx_var_formated[2],
+                            'day':dia,
+                            'date':self.rx_var_formated[4],
+                            'month':self.rx_var_formated[5],
+                            'year':self.rx_var_formated[6],
+                            'zone':self.rx_var_formated[7],
+
+                }
+                data_json = {'data':time_data,'status':True}
                 return data_json
             else:
-                data_json = {'data':[],'status':True}
+                data_json = {'data':[],'status':False}
                 return data_json
         except socket.timeout:
             print('tiempo de espera sobrepasado')
@@ -1128,7 +1149,7 @@ class MySocketSW12:
             __tcpSocket.connect((self.ip_target,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
-            __tcpSocket.close
+            __tcpSocket.close()
             data= list(reply)
             if data[8]==132:
                 return True
