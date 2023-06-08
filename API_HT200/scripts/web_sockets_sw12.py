@@ -628,7 +628,7 @@ class MySocketSW12:
             __tcpSocket.connect((self.ip_target,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
-            __tcpSocket.close
+            __tcpSocket.close()
             data= list(reply)
             if data[8]==132:
                 return True
@@ -704,7 +704,7 @@ class MySocketSW12:
             __tcpSocket.connect((self.ip_target,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
-            __tcpSocket.close
+            __tcpSocket.close()
             data= list(reply)
             if data[8]==132:
                 return True
@@ -778,7 +778,7 @@ class MySocketSW12:
             __tcpSocket.connect((self.ip_target,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
-            __tcpSocket.close
+            __tcpSocket.close()
             data= list(reply)
             if data[8]==132:
                 return True
@@ -852,7 +852,7 @@ class MySocketSW12:
             __tcpSocket.connect((self.ip_target,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
-            __tcpSocket.close
+            __tcpSocket.close()
             data= list(reply)
             if data[8]==132:
                 return True
@@ -929,7 +929,7 @@ class MySocketSW12:
             __tcpSocket.connect((self.ip_target,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
-            __tcpSocket.close
+            __tcpSocket.close()
             data= list(reply)
             if data[8]==132:
                 return True
@@ -1004,7 +1004,7 @@ class MySocketSW12:
             __tcpSocket.connect((self.ip_target,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
-            __tcpSocket.close
+            __tcpSocket.close()
             data= list(reply)
             if data[8]==132:
                 return True
@@ -1075,7 +1075,7 @@ class MySocketSW12:
             __tcpSocket.connect((self.ip_target,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
-            __tcpSocket.close
+            __tcpSocket.close()
             data= list(reply)
             if data[8]==132:
                 return True
