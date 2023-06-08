@@ -55,4 +55,7 @@ urlpatterns = [
      path('postGruposSW12',postGruposSW12.as_view()),
      path('postGreenConflictSW12',postGreenConflictSW12.as_view()),
      path('postPlanesSW12',postPlanesSW12.as_view()),
+     path('postOtrosParametrosSW12',postOtrosParametrosSW12.as_view()),
+     path('postHorariosSW12',postHorariosSW12.as_view()),
+     path('postDiasEspecialesSW12',postDiasEspecialesSW12.as_view()),
 ]

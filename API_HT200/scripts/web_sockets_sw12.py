@@ -282,6 +282,7 @@ class MySocketSW12:
                 try:
                     if(self.readPendingDatagrams(tramas_sw12.semana_frame)):
                         print("Horario fin de semana obtenido")
+                        print(self.rx_var_formated)
                         horarios_data = []
                         counter = 1
                         for i in range(16):
@@ -432,20 +433,22 @@ class MySocketSW12:
     def getSpecialDays(self):
         try:
             if(self.readPendingDatagrams(tramas_sw12.especial_frame)):
-                print("Obteniendo Tiempo del Controlador")
+                print("Obteniendo Dias especiales del Controlador")
                 print(self.rx_var_formated)
+                print(len(self.rx_var_formated))
                 fecha_data = []
                 counter = 1
                 for i in range(16):
                     mes = self.rx_var_formated[counter]
                     dia = self.rx_var_formated[counter +1]
                     tipo = self.rx_var_formated[counter +2]
-                    fecha = {'id':'date-'.format(i+1),'mes':mes,'dia':dia,'tipo':tipo}
+                    fecha = {'id':'date-{}'.format(i+1),'mes':mes,'dia':dia,'tipo':tipo}
                     counter +=3
                     if mes != 0 and dia != 0 and tipo != 0:
                         fecha_data.append(fecha)
                 fines_semana = self.rx_var_formated.pop()
                 bin_format = f'{fines_semana:08b}'
+                print(bin_format)
                 domingo = bool(int(bin_format[7]))
                 lunes = bool(int(bin_format[6]))
                 martes = bool(int(bin_format[5]))
@@ -837,6 +840,236 @@ class MySocketSW12:
             print('tiempo de espera sobrepasado')
             data_json = {'data':[],'status':False}
             return data_json
+
+
+    def setOtrosParametros(self,__data):
+        try:
+            gbtx = bytearray(23)
+            gbtx[0]=192
+            gbtx[1]=16
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[4]=3
+            gbtx[5]=1
+            gbtx[6]=1
+            gbtx[7]=0
+            gbtx[8]=129
+            gbtx[9]=8
+            gbtx[10]=10
+            gbtx[11]=16
+            temp_var = []
+            num = 12;
+            temp_num = 9
+            for x in __data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+     
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+
+            # n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
+            # return True
+            __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            __tcpSocket.settimeout(20)
+            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.sendall(gbtx)
+            reply = __tcpSocket.recv(1024)
+            __tcpSocket.close
+            data= list(reply)
+            if data[8]==132:
+                return True
+            else:
+                return False
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
+
+    def setHorarios(self,__data):
+        try:
+            gbtx = bytearray(78)
+            gbtx[0]=192
+            gbtx[1]=16
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[4]=3
+            gbtx[5]=1
+            gbtx[6]=1
+            gbtx[7]=0
+            gbtx[8]=129
+            gbtx[9]=9
+            gbtx[10]=65
+            temp_var = []
+            num = 11;
+            temp_num = 65
+            for x in __data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+     
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+
+            # n = 0
+            # for i in list(gbtx):
+            #     print(" {} trama -> {}".format(i,n))
+            #     n+=1
+            # return True
+            __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            __tcpSocket.settimeout(20)
+            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.sendall(gbtx)
+            reply = __tcpSocket.recv(1024)
+            __tcpSocket.close
+            data= list(reply)
+            if data[8]==132:
+                return True
+            else:
+                return False
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
+
+
+    def setDiasEspeciales(self,__data):
+        try:
+            gbtx = bytearray(63)
+            gbtx[0]=192
+            gbtx[1]=16
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[4]=3
+            gbtx[5]=1
+            gbtx[6]=1
+            gbtx[7]=0
+            gbtx[8]=129
+            gbtx[9]=9
+            gbtx[10]=50
+            temp_var = []
+            num = 11;
+            temp_num = 50
+            for x in __data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+     
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+
+            __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            __tcpSocket.settimeout(20)
+            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.sendall(gbtx)
+            reply = __tcpSocket.recv(1024)
+            __tcpSocket.close
+            data= list(reply)
+            if data[8]==132:
+                return True
+            else:
+                return False
+        except socket.timeout:
+            print('tiempo de espera sobrepasado')
+            data_json = {'data':[],'status':False}
+            return data_json
+
+
+
+
+
+
+
 
 
 
