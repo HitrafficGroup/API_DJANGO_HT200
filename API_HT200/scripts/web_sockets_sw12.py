@@ -87,7 +87,7 @@ class MySocketSW12:
                     counter +=1
                     duracion = self.rx_var_formated[counter]
                     counter +=1
-                    plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
+                    plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
                 data_json = {'data':plan_data,'status':True}
                 return data_json
@@ -134,7 +134,7 @@ class MySocketSW12:
                     counter +=1
                     duracion = self.rx_var_formated[counter]
                     counter +=1
-                    plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
+                    plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
                 data_json = {'data':plan_data,'status':True}
                 return data_json
@@ -158,7 +158,7 @@ class MySocketSW12:
                     counter +=1
                     duracion = self.rx_var_formated[counter]
                     counter +=1
-                    plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
+                    plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
                 data_json = {'data':plan_data,'status':True}
                 return data_json
@@ -183,7 +183,7 @@ class MySocketSW12:
                     counter +=1
                     duracion = self.rx_var_formated[counter]
                     counter +=1
-                    plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
+                    plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
                 data_json = {'data':plan_data,'status':True}
                 return data_json
@@ -207,7 +207,7 @@ class MySocketSW12:
                     counter +=1
                     duracion = self.rx_var_formated[counter]
                     counter +=1
-                    plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
+                    plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
                 data_json = {'data':plan_data,'status':True}
                 return data_json
@@ -231,7 +231,7 @@ class MySocketSW12:
                     counter +=1
                     duracion = self.rx_var_formated[counter]
                     counter +=1
-                    plan = {'id':'plan-{}'.format(num),'fase':fase,'duracion':duracion}
+                    plan = {'id':'paso-{}'.format(num),'fase':fase,'duracion':duracion}
                     plan_data.append(plan)
                 data_json = { 'data':plan_data, 'status':True}
                 return data_json
