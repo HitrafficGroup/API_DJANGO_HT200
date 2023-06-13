@@ -2,7 +2,7 @@ import socket
 import sys  
 from scripts import tramas_sw12
 import datetime
-
+from django.utils import timezone
 
 
 class MySocketSW12:
@@ -1176,7 +1176,9 @@ class MySocketSW12:
             gbtx[9]=5
             gbtx[10]=8
             now = datetime.datetime.now()
-            print("hora del servidor: ",now)
+            now2 = timezone.now()
+            print("hora del controlador: ",now)
+            print("hora2: ",now2)
             seconds = str(now.second)
             minute = str(now.minute)
             hour = str(now.hour)
