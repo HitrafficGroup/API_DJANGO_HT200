@@ -81,6 +81,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://sub.example.com",
     "http://localhost:8080",
     "http://127.0.0.1:8000",
+    "http://ec2-3-22-179-49.us-east-2.compute.amazonaws.com:8000",
+    
 
 ]
 
@@ -113,7 +115,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 ALLOWED_HOSTS = [
-    '.localhost', '127.0.0.2','127.0.0.1','192.168.1.175','10.8.0.2','192.168.1.14'
+    '.localhost',
+      '127.0.0.2',
+      '127.0.0.1',
+      '192.168.1.175',
+      '10.8.0.2',
+      '192.168.1.14',
+      "172.31.5.120",
+      
 ]
 
 # Internationalization
