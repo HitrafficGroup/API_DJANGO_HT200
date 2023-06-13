@@ -1176,6 +1176,7 @@ class MySocketSW12:
             gbtx[9]=5
             gbtx[10]=8
             now = datetime.datetime.now()
+            print("hora del servidor: ",now)
             seconds = str(now.second)
             minute = str(now.minute)
             hour = str(now.hour)
