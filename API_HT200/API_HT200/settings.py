@@ -122,7 +122,7 @@ ALLOWED_HOSTS = [
       '10.8.0.2',
       '192.168.1.14',
       "172.31.5.120",
-    "http://ec2-3-22-179-49.us-east-2.compute.amazonaws.com",
+    "ec2-3-22-179-49.us-east-2.compute.amazonaws.com",
       
 ]
 
