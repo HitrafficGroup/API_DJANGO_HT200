@@ -9,8 +9,8 @@ import json
 funciones de lectura del controlador ht200
 '''
 
-controlador_ht200 = web_sockets.MySocket('192.168.2.122')
-controlador_sw12 = web_sockets_sw12.MySocketSW12('192.168.2.97')
+controlador_ht200 = web_sockets.MySocket('192.168.1.122')
+controlador_sw12 = web_sockets_sw12.MySocketSW12('192.168.1.97')
 class homeView(APIView):
     ''' Vista de Inicio'''
     def get(self, request, *args, **kwargs):
