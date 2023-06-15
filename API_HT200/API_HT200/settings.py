@@ -123,6 +123,7 @@ ALLOWED_HOSTS = [
       '192.168.1.14',
       "172.31.5.120",
     "ec2-3-22-179-49.us-east-2.compute.amazonaws.com",
+    '3.22.179.49',
       
 ]
 
