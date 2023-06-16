@@ -28,7 +28,7 @@ class homeView(APIView):
                   "para obtener canales": "/getChannelHT200",
                   "para obtener cordenadas": "/getCoordlHT200",
                   "para obtener superposicion": "/getOverlapHT200",
-                  "fases sw12":"getFasesSW12"
+                  "fases sw12":"/getFasesSW12"
                   }
         print(result)
         return Response(result,status=status.HTTP_200_OK)
@@ -233,8 +233,6 @@ class setUnitHT200(APIView):
             controlador_ht200.disconnect()
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
-
-
 class setFasesHT200(APIView):
     def post(self, request, *args, **kwargs):
         if len(request.body) == 0 :
@@ -417,7 +415,8 @@ funciones de lectura del controlador sw12
 class getFasesSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getFases()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getFases(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -433,7 +432,8 @@ class getFasesSW12(APIView):
 class getOrdinaryScheduleSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getOrdinarySchedule()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getOrdinarySchedule(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -449,7 +449,8 @@ class getOrdinaryScheduleSW12(APIView):
 class getWeekendScheduleSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getWeekendSchedule()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getWeekendSchedule(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -467,7 +468,8 @@ class getWeekendScheduleSW12(APIView):
 class getFestivalScheduleSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getFestivalSchedule()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getFestivalSchedule(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -483,7 +485,8 @@ class getFestivalScheduleSW12(APIView):
 class getGruposSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getGrupos()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getGrupos(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -500,7 +503,8 @@ class getGruposSW12(APIView):
 class getGreenConflictSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getGreenConflict()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getGreenConflict(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -516,7 +520,8 @@ class getGreenConflictSW12(APIView):
 class getOperativeParamsSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getOperativeParams()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getOperativeParams(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -531,7 +536,8 @@ class getOperativeParamsSW12(APIView):
 class getPlan1SW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getPlan1()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getPlan1(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -547,7 +553,8 @@ class getPlan1SW12(APIView):
 class getPlan2SW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getPlan2()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getPlan2(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -562,7 +569,8 @@ class getPlan2SW12(APIView):
 class getPlan3SW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getPlan3()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getPlan3(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -576,7 +584,8 @@ class getPlan3SW12(APIView):
 class getPlan4SW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getPlan4()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getPlan4(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -591,7 +600,8 @@ class getPlan4SW12(APIView):
 class getPlan5SW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getPlan5()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getPlan5(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -606,7 +616,8 @@ class getPlan5SW12(APIView):
 class getPlan6SW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getPlan6()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getPlan6(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -622,7 +633,8 @@ class getPlan6SW12(APIView):
 class getPlan7SW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getPlan7()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getPlan7(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -637,7 +649,8 @@ class getPlan7SW12(APIView):
 class getPlan8SW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getPlan8()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getPlan8(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -652,7 +665,8 @@ class getPlan8SW12(APIView):
 class getTimeControllerSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getTimeController()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getTimeController(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -667,7 +681,8 @@ class getTimeControllerSW12(APIView):
 class getSpecialDaysSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getSpecialDays()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getSpecialDays(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -681,7 +696,8 @@ class getSpecialDaysSW12(APIView):
 class getEntradasSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getEntradas()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getEntradas(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -696,7 +712,8 @@ class getEntradasSW12(APIView):
 class getErroresSW12(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            result = controlador_sw12.getErrores()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.getErrores(ip)
             if result['status']:
                 return Response(result['data'],status=status.HTTP_200_OK)
             else:
@@ -714,17 +731,16 @@ class getErroresSW12(APIView):
 
 
 class postFasesSW12(APIView):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         if len(request.body) == 0 :
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador_sw12.setFases(json_data['trama'])
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setFases(json_data['trama'],ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
@@ -732,17 +748,16 @@ class postFasesSW12(APIView):
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
         
 class postGruposSW12(APIView):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         if len(request.body) == 0 :
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador_sw12.setGrupos(json_data['trama'])
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setGrupos(json_data['trama'],ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
@@ -755,12 +770,11 @@ class postGreenConflictSW12(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador_sw12.setGreenConflict(json_data['trama'])
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setGreenConflict(json_data['trama'],ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
@@ -774,12 +788,11 @@ class postPlanesSW12(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador_sw12.setPlanes(json_data['trama'])
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setPlanes(json_data['trama'],ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
@@ -793,12 +806,11 @@ class postOtrosParametrosSW12(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador_sw12.setOtrosParametros(json_data['trama'])
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setOtrosParametros(json_data['trama'],ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
@@ -813,12 +825,11 @@ class postHorariosSW12(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador_sw12.setHorarios(json_data['trama'])
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setHorarios(json_data['trama'],ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
@@ -832,12 +843,11 @@ class postDiasEspecialesSW12(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador_sw12.setDiasEspeciales(json_data['trama'])
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setDiasEspeciales(json_data['trama'],ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
@@ -851,12 +861,11 @@ class postEntradasSW12(APIView):
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         json_data = json.loads(request.body)
         try:
-            result = controlador_sw12.setEntradas(json_data['trama'])
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setEntradas(json_data['trama'],ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
@@ -868,12 +877,11 @@ class postTimeSW12(APIView):
         if len(request.body) == 0 :
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
         try:
-            result = controlador_sw12.setTime()
+            ip=request.GET.get('ip')
+            result = controlador_sw12.setTime(ip)
             if result:
-                print('envio correcto')
                 return Response(result,status=status.HTTP_200_OK)
             else:
-                print('envio incorrecto')
                 return Response(result,status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)

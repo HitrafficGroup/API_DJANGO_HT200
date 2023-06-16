@@ -8,16 +8,12 @@ from django.utils import timezone
 class MySocketSW12:
     def __init__(self, ip_target):
         self.rx_var_formated = []
-        self.__rx_var = bytearray(2048)
-        self.__rx_num = 0
-        self.__num = 11
-        self.__ips_connected = []
         self.__port = 4001
         self.ip_target = ip_target
-    def readPendingDatagrams(self,__frame):
+    def readPendingDatagrams(self,__frame,ip_controller):
         __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         __tcpSocket.settimeout(10)
-        __tcpSocket.connect((self.ip_target,self.__port))
+        __tcpSocket.connect((ip_controller,self.__port))
         __tcpSocket.sendall(__frame)
         reply = __tcpSocket.recv(1024)
         __tcpSocket.close()
@@ -30,11 +26,9 @@ class MySocketSW12:
         else:
             print("trama incorrecta")
             return False
-    def getFases(self):
+    def getFases(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.fases_frame)):
-                print(self.rx_var_formated)
-                print("Fases Obtenidas")
+            if(self.readPendingDatagrams(tramas_sw12.fases_frame,ip)):
                 fases_data = []
                 counter = 0
                 for i in range(16):
@@ -51,10 +45,9 @@ class MySocketSW12:
             print('tiempo de espera sobrepasado')
             data_json = {'data':[],'status':False}
             return data_json
-    def getPlan1(self):
+    def getPlan1(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan1_frame)):
-                print("Plan1 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan1_frame,ip)):
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -75,10 +68,9 @@ class MySocketSW12:
             data_json = {'data':[],'status':False}
             return data_json
 
-    def getPlan2(self):
+    def getPlan2(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan2_frame)):
-                print("Plan2 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan2_frame,ip)):
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -98,10 +90,9 @@ class MySocketSW12:
             print('tiempo de espera sobrepasado')
             data_json = {'data':[],'status':False}
             return data_json
-    def getPlan3(self):
+    def getPlan3(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan3_frame)):
-                print("Plan3 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan3_frame,ip)):
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -122,10 +113,9 @@ class MySocketSW12:
                 data_json = {'data':[],'status':False}
                 return data_json
 
-    def getPlan4(self):
+    def getPlan4(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan4_frame)):
-                print("Plan4 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan4_frame,ip)):
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -146,10 +136,9 @@ class MySocketSW12:
                 data_json = {'data':[],'status':False}
                 return data_json
 
-    def getPlan5(self):
+    def getPlan5(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan5_frame)):
-                print("Plan5 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan5_frame,ip)):
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -171,10 +160,9 @@ class MySocketSW12:
                 return data_json
 
 
-    def getPlan6(self):
+    def getPlan6(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan6_frame)):
-                print("Plan6 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan6_frame,ip)):
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -195,10 +183,9 @@ class MySocketSW12:
                 data_json = {'data':[],'status':False}
                 return data_json
 
-    def getPlan7(self):
+    def getPlan7(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan7_frame)):
-                print("Plan7 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan7_frame,ip)):
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -219,10 +206,9 @@ class MySocketSW12:
                 data_json = {'data':[],'status':False}
                 return data_json
 
-    def getPlan8(self):
+    def getPlan8(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.plan8_frame)):
-                print("Plan8 Obtenido")
+            if(self.readPendingDatagrams(tramas_sw12.plan8_frame,ip)):
                 plan_data = []
                 counter = 1
                 for i in range(12):
@@ -243,11 +229,9 @@ class MySocketSW12:
                 data_json = {'data':[],'status':False}
                 return data_json
 
-    def getOrdinarySchedule(self):
+    def getOrdinarySchedule(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.horarios_frame)):
-                print("Horario Obtenido")
-                print(self.rx_var_formated)
+            if(self.readPendingDatagrams(tramas_sw12.horarios_frame,ip)):
                 horarios_data = []
                 counter = 1
                 for i in range(16):
@@ -278,11 +262,9 @@ class MySocketSW12:
             data_json = {'data':[],'status':False}
             return data_json
 
-    def getWeekendSchedule(self):
+    def getWeekendSchedule(self,ip):
                 try:
-                    if(self.readPendingDatagrams(tramas_sw12.semana_frame)):
-                        print("Horario fin de semana obtenido")
-                        print(self.rx_var_formated)
+                    if(self.readPendingDatagrams(tramas_sw12.semana_frame,ip)):
                         horarios_data = []
                         counter = 1
                         for i in range(16):
@@ -312,10 +294,9 @@ class MySocketSW12:
                     print('tiempo de espera sobrepasado')
                     data_json = {'data':[],'status':False}
                     return data_json
-    def getFestivalSchedule(self):
+    def getFestivalSchedule(self,ip):
             try:
-                if(self.readPendingDatagrams(tramas_sw12.festivo_frame)):
-                    print("Horario festivo obtenido")
+                if(self.readPendingDatagrams(tramas_sw12.festivo_frame,ip)):
                     horarios_data = []
                     counter = 1
                     for i in range(16):
@@ -346,12 +327,10 @@ class MySocketSW12:
                 data_json = {'data':[],'status':False}
                 return data_json
 
-    def getGrupos(self):
+    def getGrupos(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.grupos_frame)):
-                print("Obteniendo Grupos")
+            if(self.readPendingDatagrams(tramas_sw12.grupos_frame,ip)):
                 grupos = []
-                print(self.rx_var_formated)
                 counter = 1
                 for i in range(4):
                     num = i
@@ -368,12 +347,10 @@ class MySocketSW12:
             print('tiempo de espera sobrepasado')
             data_json = {'data':[],'status':False}
             return data_json
-    def getGreenConflict(self):
+    def getGreenConflict(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.grenn_conflict)):
-                print("Obteniendo conflictos verde")
+            if(self.readPendingDatagrams(tramas_sw12.grenn_conflict,ip)):
                 green_conflict = []
-                print(self.rx_var_formated)
                 counter = 0
                 bin_format = f'{self.rx_var_formated[3]:08b}'
                 g1_bin = f'{self.rx_var_formated[0]:04b}'
@@ -390,9 +367,9 @@ class MySocketSW12:
             print('tiempo de espera sobrepasado')
             data_json = {'data':[],'status':False}
             return data_json
-    def getOperativeParams(self):
+    def getOperativeParams(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.operative_frame)):
+            if(self.readPendingDatagrams(tramas_sw12.operative_frame,ip)):
                 print("Obteniendo parametros Operativos")
                 params ={
                             'destello_al_encender':self.rx_var_formated[1],
@@ -413,11 +390,9 @@ class MySocketSW12:
             data_json = {'data':[],'status':False}
             return data_json
 
-    def getTimeController(self):
+    def getTimeController(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.time_frame)):
-                print("Obteniendo Tiempo del Controlador")
-                print(self.rx_var_formated)
+            if(self.readPendingDatagrams(tramas_sw12.time_frame,ip)):
                 dias_semana = self.rx_var_formated[3]
                 dias = ['none','domingo','lunes','martes','miercoles','jueves','viernes','sabado']
                 bin_format = f'{dias_semana:08b}'
@@ -451,12 +426,9 @@ class MySocketSW12:
 
 
 
-    def getSpecialDays(self):
+    def getSpecialDays(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.especial_frame)):
-                print("Obteniendo Dias especiales del Controlador")
-                print(self.rx_var_formated)
-                print(len(self.rx_var_formated))
+            if(self.readPendingDatagrams(tramas_sw12.especial_frame,ip)):
                 fecha_data = []
                 counter = 1
                 for i in range(16):
@@ -469,7 +441,6 @@ class MySocketSW12:
                         fecha_data.append(fecha)
                 fines_semana = self.rx_var_formated.pop()
                 bin_format = f'{fines_semana:08b}'
-                print(bin_format)
                 domingo = bool(int(bin_format[7]))
                 lunes = bool(int(bin_format[6]))
                 martes = bool(int(bin_format[5]))
@@ -496,16 +467,13 @@ class MySocketSW12:
             data_json = {'data':[],'status':False}
             return data_json
 
-    def getEntradas(self):
+    def getEntradas(self,ip):
             try:
-                if(self.readPendingDatagrams(tramas_sw12.entradas_frame)):
-                    print("Obteniendo Entradas")
-                    print(self.rx_var_formated)
+                if(self.readPendingDatagrams(tramas_sw12.entradas_frame,ip)):
                     entradas_data = []
                     counter = 1
                     for i  in range(4):
                         value = f'{self.rx_var_formated[counter]:08b}'
-                        print(value)
                         check_aux = bool(int(value[2]))
                         duracion = self.rx_var_formated[counter+1]
                         paso = value[4:8]
@@ -523,10 +491,9 @@ class MySocketSW12:
                 data_json = {'data':[],'status':False}
                 return data_json
     
-    def getErrores(self):
+    def getErrores(self,ip):
         try:
-            if(self.readPendingDatagrams(tramas_sw12.errores_frame)):
-                print("Obteniendo Errores")
+            if(self.readPendingDatagrams(tramas_sw12.errores_frame,ip)):
                 errores_data = []
                 aux = self.rx_var_formated
                 longitud_trama = len(self.rx_var_formated) -2
@@ -564,7 +531,7 @@ class MySocketSW12:
             data_json = {'data':[],'status':False}
             return data_json
 
-    def setFases(self,__data):
+    def setFases(self,__data,ip_controller):
         try:
             gbtx = bytearray(29)
             gbtx[0]=192
@@ -601,8 +568,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -617,15 +582,9 @@ class MySocketSW12:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(10)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -636,11 +595,10 @@ class MySocketSW12:
                 return False
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
+            return False
     
     
-    def setGrupos(self,__data):
+    def setGrupos(self,__data,ip_controller):
         try:
             gbtx = bytearray(18)
             gbtx[0]=192
@@ -678,8 +636,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -694,14 +650,9 @@ class MySocketSW12:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(10)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -712,10 +663,9 @@ class MySocketSW12:
                 return False
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
+            return False
 
-    def setGreenConflict(self,__data):
+    def setGreenConflict(self,__data,ip_controller):
         try:
             gbtx = bytearray(20)
             gbtx[0]=192
@@ -752,8 +702,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -768,14 +716,9 @@ class MySocketSW12:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(20)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -786,9 +729,8 @@ class MySocketSW12:
                 return False
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
-    def setPlanes(self,__data):
+            return False
+    def setPlanes(self,__data,ip_controller):
         try:
             gbtx = bytearray(38)
             gbtx[0]=192
@@ -825,8 +767,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -841,15 +781,9 @@ class MySocketSW12:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(20)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -860,11 +794,10 @@ class MySocketSW12:
                 return False
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
+            return False
 
 
-    def setOtrosParametros(self,__data):
+    def setOtrosParametros(self,__data,ip_controller):
         try:
             gbtx = bytearray(23)
             gbtx[0]=192
@@ -902,8 +835,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -918,15 +849,9 @@ class MySocketSW12:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(20)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -937,10 +862,9 @@ class MySocketSW12:
                 return False
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
+            return False
 
-    def setHorarios(self,__data):
+    def setHorarios(self,__data,ip_controller):
         try:
             gbtx = bytearray(78)
             gbtx[0]=192
@@ -977,8 +901,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -994,14 +916,9 @@ class MySocketSW12:
                 num +=1;
             gbtx[num]= 192 #frame tail
 
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(20)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -1011,12 +928,10 @@ class MySocketSW12:
             else:
                 return False
         except socket.timeout:
-            print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
+            return False
 
 
-    def setDiasEspeciales(self,__data):
+    def setDiasEspeciales(self,__data,ip_controller):
         try:
             gbtx = bytearray(63)
             gbtx[0]=192
@@ -1053,8 +968,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -1072,7 +985,7 @@ class MySocketSW12:
 
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(20)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -1083,10 +996,9 @@ class MySocketSW12:
                 return False
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
+            return False
 
-    def setEntradas(self,__data):
+    def setEntradas(self,__data,ip_controller):
         try:
             gbtx = bytearray(22)
             gbtx[0]=192
@@ -1123,8 +1035,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -1139,14 +1049,9 @@ class MySocketSW12:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-            #n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(20)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -1157,11 +1062,10 @@ class MySocketSW12:
                 return False
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
+            return False
 
 
-    def setTime(self):
+    def setTime(self,ip_controller):
         try:
             gbtx = bytearray(21)
             gbtx[0]=192
@@ -1176,19 +1080,14 @@ class MySocketSW12:
             gbtx[9]=5
             gbtx[10]=8
             now = datetime.datetime.now()
-            now2 = timezone.now()
-            print("hora del controlador: ",now)
-            print("hora2: ",now2)
             seconds = str(now.second)
             minute = str(now.minute)
             hour = str(now.hour)
             day = 4
             date = str(now.day)
-
             month = str(now.month)
             year = str(now.year)[2:]
             __data = [int(seconds,16),int(minute,16),int(hour,16),day,int(date,16),int(month,16),int(year,16),133]
-            print(__data)
             temp_var = []
             num = 11
             temp_num = len(__data)
@@ -1212,8 +1111,6 @@ class MySocketSW12:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -1228,14 +1125,9 @@ class MySocketSW12:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
             __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             __tcpSocket.settimeout(20)
-            __tcpSocket.connect((self.ip_target,self.__port))
+            __tcpSocket.connect((ip_controller,self.__port))
             __tcpSocket.sendall(gbtx)
             reply = __tcpSocket.recv(1024)
             __tcpSocket.close()
@@ -1246,8 +1138,7 @@ class MySocketSW12:
                 return False
         except socket.timeout:
             print('tiempo de espera sobrepasado')
-            data_json = {'data':[],'status':False}
-            return data_json
+            return False
 
 
 
