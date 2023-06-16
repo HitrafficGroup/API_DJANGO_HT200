@@ -6,10 +6,9 @@ from django.utils import timezone
 
 
 class MySocketSW12:
-    def __init__(self, ip_target):
+    def __init__(self):
         self.rx_var_formated = []
         self.__port = 4001
-        self.ip_target = ip_target
     def readPendingDatagrams(self,__frame,ip_controller):
         __tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         __tcpSocket.settimeout(10)

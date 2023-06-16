@@ -2,38 +2,33 @@ import socket
 import time
 from scripts import tramas
 import pandas as pd
-class MySocket:
-    def __init__(self, ip_target):
+class MySocketHT200:
+    def __init__(self):
         self.rx_var_formated = []
         self.__rx_var = bytearray(2048)
         self.__rx_num = 0
         self.__num = 11
         self.__ips_connected = []
         self.__port = 161
-        self.ip_target = ip_target
-        self.__udpsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.__connect()
-    
-    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    def __connect(self):
-        port = 13536
-        while True:
-            try:
-                self.__udpsocket.bind(('0.0.0.0', port))
-                break
-            except OSError:
-                port += 1
-    def disconnect(self):
-        self.__udpsocket.close()
-        print('nos desconectamos !')
-    def readPendingDatagrams(self,frame,ip_address):
+
+      
+    def readPendingDatagrams(self,frame,ip_controller):
         CheckSumCalc = 0
         CheckSumReceive = 0
         data_received = bytearray()
         try:
-            self.__udpsocket.sendto(frame, (ip_address,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            self.__ips_connected.append(sender)
+            __udpsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            port = 13536
+            while True:
+                try:
+                    __udpsocket.bind(('0.0.0.0', port))
+                    __udpsocket.sendto(frame, (ip_controller,self.__port))
+                    data_received, sender = __udpsocket.recvfrom(2048)
+                    self.__ips_connected.append(sender)
+                    break
+                except OSError:
+                    port += 1
+            __udpsocket.close()
             array_data_received = list(data_received) #convertimos en una lista de enteros los valores recibidos por udp
             size = len(array_data_received)
 
@@ -78,9 +73,9 @@ class MySocket:
             print("algo ocurrio mal")
             self.disconnect()
             return False
-    def getTime(self):
+    def getTime(self,ip):
         self.__rx_var
-        if self.readPendingDatagrams(tramas.time_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.time_frame,ip):
             second = self.__rx_var[0]//16*10 + self.__rx_var[0]%16 # segundo
             minute = self.__rx_var[1]//16*10 + self.__rx_var[1]%16 # minuto
             hour = self.__rx_var[2]//16*10 + self.__rx_var[2]%16 # hora
@@ -98,10 +93,10 @@ class MySocket:
             "year":year,
             }
             return time_controler
-    def getFases(self):
+    def getFases(self,ip):
         rx_var = self.__rx_var
         print('solicitando fases ....')
-        if self.readPendingDatagrams(tramas.fases_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.fases_frame,ip):
             PhaseSize = 32
             if 16 == rx_var[0] and self.__rx_num == PhaseSize * 16 + 1:
                 data_list = []
@@ -164,9 +159,9 @@ class MySocket:
                     data_list.append(data_fase)
                 return(data_list)
     
-    def getSecuencia(self):
+    def getSecuencia(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.secuence_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.secuence_frame,ip):
             SequenceSize =(16 + 1) * 4 + 1
             list_secuencies = []
             table = 0
@@ -189,9 +184,9 @@ class MySocket:
                         rings_secuency.append(fases_ring)
                     list_secuencies.append({"data":rings_secuency,"id":"seq-{}".format(table)})
                 return list_secuencies
-    def getSplit(self):
+    def getSplit(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.split_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.split_frame,ip):
             SplitSize = 16 * 4 + 1;
             split_list_total = []
             if 20 == rx_var[0] and self.__rx_num == SplitSize * 20 + 1:
@@ -221,9 +216,9 @@ class MySocket:
                     split_list_total.append({"data":split_list,"id":"split-{}".format(index)})
                 return split_list_total
 
-    def getPattern(self):
+    def getPattern(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.pattern_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.pattern_frame,ip):
             
             PatternSize = 7
             if 100 == rx_var[0] and self.__rx_num == PatternSize * 100+ 1:
@@ -252,9 +247,9 @@ class MySocket:
     la funcion de  obtencion de patrones se debe decodificar los valores del objeto para poder mapear
     '''
 
-    def getAccion(self):
+    def getAccion(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.action_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.action_frame,ip):
             ActionSize = 4
             if 100 == rx_var[0] and self.__rx_num == ActionSize * 100 + 1:
                 readpoint = 1
@@ -277,9 +272,9 @@ class MySocket:
                     action_list.append(action_dict)
                 return action_list
     
-    def getPlanes(self):
+    def getPlanes(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.plan_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.plan_frame,ip):
             plansize = 73
             if 16 == rx_var[0] and self.__rx_num == (plansize * 16 + 1):
                 readpoint = 1;
@@ -306,10 +301,10 @@ class MySocket:
                     plan_total_list.append({"data":plan_list,"id":"plan-{}".format(plan)})
                 return plan_total_list
 
-    def getScnedule(self):
+    def getScnedule(self,ip):
         rx_var = self.__rx_var
         print('pedimos horarios')
-        if self.readPendingDatagrams(tramas.schedule_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.schedule_frame,ip):
             schedule_size = 9
             schedule_list = []
             for i in range(40):
@@ -340,9 +335,9 @@ class MySocket:
                 }
                 schedule_list.append(schedule_dict)
             return schedule_list
-    def getDeviceInfo(self):
+    def getDeviceInfo(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.device_info_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.device_info_frame,ip):
             StrLen = 0
             temp = [0] * 64
 
@@ -358,9 +353,9 @@ class MySocket:
             return deviceinfo_dict
           
 
-    def getBasicInfo(self):
+    def getBasicInfo(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.basic_info_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.basic_info_frame,ip):
             # StrLen = 0
             # temp = np.empty(64)
             # i = 0
@@ -389,9 +384,9 @@ class MySocket:
             return basicinfo_dict
 
 
-    def getUnit(self):
+    def getUnit(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.unit_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.unit_frame,ip):
             if self.__rx_num == 12:
                 StartupFlash = rx_var[0]
                 StartupAllRed = rx_var[1]
@@ -419,10 +414,10 @@ class MySocket:
                      "RedFailedDetectFlag":RedFailedDetectFlag
                 }
                 return unit_dict
-    def getChannel(self):
+    def getChannel(self,ip):
         rx_var = self.__rx_var
         channel_list = []
-        if self.readPendingDatagrams(tramas.chanel_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.chanel_frame,ip):
             ChannelSize = 8
             if 16 == rx_var[0] and self.__rx_num == ChannelSize * 16 + 1 :
                 readpoint = 1
@@ -456,9 +451,9 @@ class MySocket:
                     channel_list.append(channel_dict)
 
                 return(channel_list)
-    def getCoord(self):
+    def getCoord(self,ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.coord_frame,ip_address=self.ip_target):
+        if self.readPendingDatagrams(tramas.coord_frame,ip):
             if self.__rx_num == 4:
                 OperationalMode = rx_var[0]
                 CorrectionMode = rx_var[1]
@@ -473,11 +468,11 @@ class MySocket:
                 return coord_dict
 
 
-    def getOverlap(self):
+    def getOverlap(self,ip):
          rx_var = self.__rx_var
          OverlapSize = 10
          overlap_list = []
-         if self.readPendingDatagrams(tramas.overlap_frame,ip_address=self.ip_target):
+         if self.readPendingDatagrams(tramas.overlap_frame,ip):
             if 16== rx_var[0] and self.__rx_num == OverlapSize * 16 + 1:
                 readpoint = 1
                 for i in range(16):
@@ -503,7 +498,7 @@ class MySocket:
                     }
                     overlap_list.append(overlapDict)
                 return(overlap_list)
-    def setUnit(self,data):
+    def setUnit(self,data,ip_controller):
         gbtx = bytearray(25)
         #trama normal para escritura
         gbtx[0]=192
@@ -557,16 +552,9 @@ class MySocket:
             gbtx[num]= CheckSumCalc
             num +=1;
         gbtx[num]= 192 #frame tail
-        self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-        data_received, sender = self.__udpsocket.recvfrom(2048)
-        trama_respuesta = list(data_received)
-        if trama_respuesta[8] == 132:
-            return True
-        else:
-            return False
-        
+        return self.enviarData(gbtx,ip_controller)
 
-    def setFases(self,data):
+    def setFases(self,data,ip_controller):
             gbtx = bytearray(526)
             #trama normal para escritura
             gbtx[0]=192
@@ -622,15 +610,9 @@ class MySocket:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            trama_respuesta = list(data_received)
-            if trama_respuesta[8] == 132:
-                return True
-            else:
-                return False
+            return self.enviarData(gbtx,ip_controller)
         
-    def setSecuencias(self,data):
+    def setSecuencias(self,data,ip_controller):
             gbtx = bytearray(1118)
             #trama normal para escritura
             gbtx[0]=192
@@ -686,15 +668,9 @@ class MySocket:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            trama_respuesta = list(data_received)
-            if trama_respuesta[8] == 132:
-                return True
-            else:
-                return False
+            return self.enviarData(gbtx,ip_controller)
     
-    def setSplit(self,data):
+    def setSplit(self,data,ip_controller):
             gbtx = bytearray(1314)
             #trama normal para escritura
             gbtx[0]=192
@@ -751,21 +727,10 @@ class MySocket:
                 num +=1;
             gbtx[num]= 192 #frame tail
             
-            n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
-            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            trama_respuesta = list(data_received)
-            if trama_respuesta[8] == 132:
-                return True
-            else:
-                return False
+            return self.enviarData(gbtx,ip_controller)
         
 
-    def setPattern(self,data):
+    def setPattern(self,data,ip_controller):
             gbtx = bytearray(714)
             #trama normal para escritura
             gbtx[0]=192
@@ -822,21 +787,9 @@ class MySocket:
                 num +=1;
             gbtx[num]= 192 #frame tail
             
-            n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
-            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            trama_respuesta = list(data_received)
-            if trama_respuesta[8] == 132:
-                return True
-            else:
-                return False
-        
+            return self.enviarData(gbtx,ip_controller)
 
-    def setAction(self,data):
+    def setAction(self,data,ip_controller):
             gbtx = bytearray(414)
             #trama normal para escritura
             gbtx[0]=192
@@ -891,20 +844,9 @@ class MySocket:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-            
-            n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
-            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            trama_respuesta = list(data_received)
-            if trama_respuesta[8] == 132:
-                return True
-            else:
-                return False
-    def setPlan(self,data):
+            return self.enviarData(gbtx,ip_controller)
+    
+    def setPlan(self,data,ip_controller):
             gbtx = bytearray(1182)
             #trama normal para escritura
             gbtx[0]=192
@@ -960,24 +902,13 @@ class MySocket:
                 num +=1;
             gbtx[num]= 192 #frame tail
             
-            n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
-            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            trama_respuesta = list(data_received)
-            if trama_respuesta[8] == 132:
-                return True
-            else:
-                return False
+            return self.enviarData(gbtx,ip_controller)
                 
         
 
 
 
-    def setHorarios(self,data):
+    def setHorarios(self,data,ip_controller):
             gbtx = bytearray(374)
             #trama normal para escritura
             gbtx[0]=192
@@ -1032,21 +963,10 @@ class MySocket:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
-            
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
-            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            trama_respuesta = list(data_received)
-            if trama_respuesta[8] == 132:
-                return True
-            else:
-                return False
+    
+            return self.enviarData(gbtx,ip_controller)
 
-    def setChannel(self,data):
+    def setChannel(self,data,ip_controller):
             gbtx = bytearray(142)
             #trama normal para escritura
             gbtx[0]=192
@@ -1102,22 +1022,32 @@ class MySocket:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
+            return self.enviarData(gbtx,ip_controller)
+
             
-            # n = 0
-            # for i in list(gbtx):
-            #     print(" {} trama -> {}".format(i,n))
-            #     n+=1
-            # return True
-            self.__udpsocket.sendto(gbtx, (self.ip_target,self.__port))
-            data_received, sender = self.__udpsocket.recvfrom(2048)
-            trama_respuesta = list(data_received)
-            if trama_respuesta[8] == 132:
-                return True
-            else:
-                return False
-    def setIpTarget(self,data):
-        self.ip_target = data
-                
+    def enviarData(self,data,ip):
+        __udpsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        flag = False
+        port = 13536
+        while True:
+            try:
+                __udpsocket.bind(('0.0.0.0', port))
+                __udpsocket.sendto(data, (ip,self.__port))
+                data_received, sender = __udpsocket.recvfrom(2048)
+                trama_respuesta = list(data_received)
+                if trama_respuesta[8] == 132:
+                    flag = True
+                else:
+                    flag = False
+                self.__ips_connected.append(sender)
+                break
+            except OSError:
+                port += 1
+        __udpsocket.close()
+
+        return flag
+     
+           
         
 
             
