@@ -71,7 +71,6 @@ class MySocketHT200:
             return True
         except OSError:
             print("algo ocurrio mal")
-            self.disconnect()
             return False
     def getTime(self,ip):
         self.__rx_var
