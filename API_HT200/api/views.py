@@ -409,7 +409,21 @@ class setIpTarget(APIView):
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 
 
-
+class setTimeHT200(APIView):
+    def post(self, request, *args, **kwargs):
+        if len(request.body) == 0 :
+            raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
+        try:
+            ip=request.GET.get('ip')
+            result = controlador_ht200.setTime(ip)
+            if result:
+                return Response(result,status=status.HTTP_200_OK)
+            else:
+                return Response(result,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 '''
 funciones de lectura del controlador sw12
 '''

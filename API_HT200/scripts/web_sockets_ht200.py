@@ -1,6 +1,7 @@
 import socket
 import time
 from scripts import tramas
+import datetime
 import pandas as pd
 class MySocketHT200:
     def __init__(self):
@@ -1023,6 +1024,86 @@ class MySocketHT200:
             gbtx[num]= 192 #frame tail
             return self.enviarData(gbtx,ip_controller)
 
+    def setTime(self,ip_controller):
+            gbtx = bytearray(142)
+            #trama normal para escritura
+            gbtx[0]=192
+            gbtx[1]=32
+            gbtx[2]=32
+            gbtx[3]=16
+            gbtx[4] = 2
+            gbtx[5]= 1
+            gbtx[6]= 1
+            gbtx[7]= 0
+            gbtx[8] = 129
+            gbtx[9] = 5
+            gbtx[10]= 1      
+            now = datetime.datetime.now()
+            seconds = str(now.second)
+            minute = str(now.minute)
+            hour = str(now.hour)
+            day = 4
+            date = str(now.day)
+            month = str(now.month)
+            year = str(now.year)[2:]
+            __data = [
+                int(seconds,16),
+                int(minute,16),
+                int(hour,16),
+                1,
+                int(date,16),
+                int(month,16),
+                int(year,16)
+                ]
+            y = ((__data[6]>>4)&0x0f)*10+(__data[6]&0x0f)
+            m = ((__data[5]>>4)&0x0f)*10+(__data[5]&0x0f)
+            d = ((__data[4]>>4)&0x0f)*10+(__data[4]&0x0f)
+            if m<3:
+                m=m+12
+                y=y-1
+            a=y/4;
+            b=(m+1)*13/5
+            c=y+a+b+d-1
+            c=c%7
+            __data[3] = c
+            temp_var = []
+            num = 11;
+            temp_num = len(__data)
+            for x in __data:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDC
+                    num +=1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num +=1
+                    gbtx[num] = 0xDD
+                    num +=1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num +=1
+            CheckSumCalc = 0
+            for i in range(1,num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+            if CheckSumCalc == 0xC0:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDC
+                num +=1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num]= 0xDB
+                num +=1
+                gbtx[num]= 0xDD
+                num +=1
+            else:
+                gbtx[num]= CheckSumCalc
+                num +=1;
+            gbtx[num]= 192 #frame tail
+            return self.enviarData(gbtx,ip_controller)
             
     def enviarData(self,data,ip):
         __udpsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
