@@ -1006,8 +1006,6 @@ class MySocketHT200:
             for i in range(1,num):
                 CheckSumCalc += gbtx[i]
             CheckSumCalc = (CheckSumCalc % 256)
-     
-
             if CheckSumCalc == 0xC0:
                 gbtx[num]= 0xDB
                 num +=1
@@ -1025,7 +1023,7 @@ class MySocketHT200:
             return self.enviarData(gbtx,ip_controller)
 
     def setTime(self,ip_controller):
-            gbtx = bytearray(142)
+            gbtx = bytearray(21)
             #trama normal para escritura
             gbtx[0]=192
             gbtx[1]=32
@@ -1103,6 +1101,9 @@ class MySocketHT200:
                 gbtx[num]= CheckSumCalc
                 num +=1;
             gbtx[num]= 192 #frame tail
+            print(list(gbtx))
+            return True
+            print(ip_controller)
             return self.enviarData(gbtx,ip_controller)
             
     def enviarData(self,data,ip):
@@ -1112,6 +1113,7 @@ class MySocketHT200:
         while True:
             try:
                 __udpsocket.bind(('0.0.0.0', port))
+                __udpsocket.settimeout(10)
                 __udpsocket.sendto(data, (ip,self.__port))
                 data_received, sender = __udpsocket.recvfrom(2048)
                 trama_respuesta = list(data_received)
