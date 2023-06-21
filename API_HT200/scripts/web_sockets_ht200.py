@@ -162,6 +162,7 @@ class MySocketHT200:
     def getSecuencia(self,ip):
         rx_var = self.__rx_var
         if self.readPendingDatagrams(tramas.secuence_frame,ip):
+            print(rx_var)
             SequenceSize =(16 + 1) * 4 + 1
             list_secuencies = []
             table = 0
@@ -179,7 +180,7 @@ class MySocketHT200:
                         for i in range(16):
                             fase = rx_var[readpoint]
                             readpoint +=1
-                            fase_data = {"id":"paso-{calculo}".format(calculo = i+1),"value":fase}
+                            fase_data = {"id":"paso-{calculo}".format(calculo = i+1),"value":fase,'ring':RingNum}
                             fases_ring.append(fase_data)
                         rings_secuency.append(fases_ring)
                     list_secuencies.append({"data":rings_secuency,"id":"seq-{}".format(table)})
