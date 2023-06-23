@@ -31,6 +31,7 @@ urlpatterns = [
      path('setChannelHT200',setChannelHT200.as_view()),
      path('setTimeHT200',setTimeHT200.as_view()),
      path('setIpTarget',setIpTarget.as_view()),
+     path('setBasicPlan',setBasicPlan.as_view()),
      #funciones de lectura sw12
      path('getFasesSW12', getFasesSW12.as_view()),
      path('getOrdinaryScheduleSW12', getOrdinaryScheduleSW12.as_view()),

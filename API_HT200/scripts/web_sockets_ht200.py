@@ -1106,7 +1106,26 @@ class MySocketHT200:
             return True
             print(ip_controller)
             return self.enviarData(gbtx,ip_controller)
-            
+    def setBasicPlan(self,data_target,ip):
+        
+        if self.setFases(ip_controller=ip,data=data_target['fases']) == False:
+            return False
+        elif self.setSecuencias(ip_controller=ip,data=data_target['secuencias']) == False:
+            return False
+        elif self.setSplit(ip_controller=ip,data=data_target['split']) == False:
+            return False
+        elif self.setPattern(ip_controller=ip,data=data_target['pattern']) == False:
+            return False
+        elif self.setAction(ip_controller=ip,data=data_target['accion']) == False:
+            return False
+        elif self.setPlan(ip_controller=ip,data=data_target['plan']) == False:
+            return False
+        elif self.setChannel(ip_controller=ip,data=data_target['channel']) == False:
+            return False
+        else:
+            return True
+        
+
     def enviarData(self,data,ip):
         __udpsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         flag = False
