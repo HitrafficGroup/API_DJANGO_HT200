@@ -207,7 +207,18 @@ class readOverlapHT200(APIView):
             print("algo ocurrio mal")
             result = {"error": "problema en el controlador"}
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
-
+        
+class readRegistroErroresHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            ip=request.GET.get('ip')
+            result = controlador_ht200.getErroresControlador(ip)
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 '''
 funciones de escritura del controlador ht200

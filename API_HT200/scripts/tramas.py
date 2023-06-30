@@ -228,20 +228,21 @@ overlap_frame.append(237) #11
 overlap_frame.append(192) #12
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#registro de errores frame
+error_frame = bytearray()
+error_frame.append(192)  #0
+error_frame.append(32)  #1
+error_frame.append(32)  #2
+error_frame.append(16)  #3
+error_frame.append(3)  #4
+error_frame.append(1)  #5
+error_frame.append(1)  #6
+error_frame.append(0)  #7
+error_frame.append(128)  #8
+error_frame.append(11)  #9
+error_frame.append(255)  #10
+error_frame.append(223)  #11
+error_frame.append(192)  #12
 
 
 

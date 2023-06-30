@@ -520,6 +520,31 @@ class MySocketHT200:
                     }
                     overlap_list.append(overlapDict)
                 return (overlap_list)
+    
+    def getErroresControlador(self,ip):
+        rx_var = self.__rx_var
+        if self.readPendingDatagrams(tramas.error_frame, ip):
+            readpoint = 1
+            error_list = []
+            for i in range(16):
+                reg_error={
+                    "year": rx_var[readpoint],
+                    "month": rx_var[readpoint+1],
+                    "date": rx_var[readpoint+2]//16*10+rx_var[readpoint+2]%16,
+                    "day": rx_var[readpoint+3]//16*10 +rx_var[readpoint+3]%16,
+                    "hour": rx_var[readpoint+4],
+                    "minute": rx_var[readpoint+5],
+                    "seconds": rx_var[readpoint+6]//16*10+rx_var[readpoint+6]%16,
+                    "error": rx_var[readpoint+7],
+                    "grupo":rx_var[readpoint+8],
+                    "reserve":rx_var[readpoint+9],
+                }
+                readpoint+=10
+                error_list.append(reg_error)
+               
+
+            #print(rx_var)
+            return (error_list)
 
     def setUnit(self, data, ip_controller):
         gbtx = bytearray(25)
@@ -1143,6 +1168,8 @@ class MySocketHT200:
             return False
         else:
             return True
+
+
 
     def enviarData(self, data, ip):
         __udpsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
