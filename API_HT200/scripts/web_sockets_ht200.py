@@ -546,6 +546,21 @@ class MySocketHT200:
             #print(rx_var)
             return (error_list)
 
+    def getWorkState(self,ip):
+        rx_var = self.__rx_var
+        if self.readPendingDatagrams(tramas.workstate_frame, ip):
+            work_state ={
+                "horario":rx_var[0],
+                "plan":rx_var[1],
+                "action":rx_var[2],
+                "pattern":rx_var[3],
+                "seq":rx_var[4],
+                "split":rx_var[5],
+                "modo":rx_var[6],
+            }
+                
+            return (work_state)
+
     def setUnit(self, data, ip_controller):
         gbtx = bytearray(25)
         # trama normal para escritura
