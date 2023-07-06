@@ -557,6 +557,18 @@ class MySocketHT200:
                 "seq":rx_var[4],
                 "split":rx_var[5],
                 "modo":rx_var[6],
+                "ring1_fase":rx_var[10],
+                "ring1_duracion":rx_var[11],
+                "ring1_remain":rx_var[12],
+                "ring2_fase":rx_var[13],
+                "ring2_duracion":rx_var[14],
+                "ring2_remain":rx_var[15],
+                "ring3_fase":rx_var[16],
+                "ring3_duracion":rx_var[17],
+                "ring3_remain":rx_var[18],
+                "ring4_fase":rx_var[19],
+                "ring4_duracion":rx_var[20],
+                "ring4_remain":rx_var[21]
             }
                 
             return (work_state)
@@ -619,6 +631,7 @@ class MySocketHT200:
 
     def setFases(self, data, ip_controller):
         gbtx = bytearray(526)
+        print("fases ...")
         # trama normal para escritura
         gbtx[0] = 192
         gbtx[1] = 32
@@ -673,10 +686,12 @@ class MySocketHT200:
             gbtx[num] = CheckSumCalc
             num += 1
         gbtx[num] = 192  # frame tail
+        print("se envia fases correctamente")
         return self.enviarData(gbtx, ip_controller)
 
     def setSecuencias(self, data, ip_controller):
         gbtx = bytearray(1118)
+        print("sec ...")
         # trama normal para escritura
         gbtx[0] = 192
         gbtx[1] = 32
@@ -730,9 +745,11 @@ class MySocketHT200:
             gbtx[num] = CheckSumCalc
             num += 1
         gbtx[num] = 192  # frame tail
+        print("se envia secuencias correctamente")
         return self.enviarData(gbtx, ip_controller)
 
     def setSplit(self, data, ip_controller):
+        print("split ...")
         gbtx = bytearray(1314)
         # trama normal para escritura
         gbtx[0] = 192
@@ -758,12 +775,12 @@ class MySocketHT200:
             if temp_var[i] == 0xC0:
                 gbtx[num] = 0xDB
                 num += 1
-                gbtx[num] = 0xDC
+                gbtx.append(0xDC)
                 num += 1
             elif temp_var[i] == 0xDB:
                 gbtx[num] = 0xDB
                 num += 1
-                gbtx[num] = 0xDD
+                gbtx.append(0xDD)
                 num += 1
             else:
                 gbtx[num] = temp_var[i]
@@ -787,10 +804,11 @@ class MySocketHT200:
             gbtx[num] = CheckSumCalc
             num += 1
         gbtx[num] = 192  # frame tail
-
+        print("se envia split correctamente")
         return self.enviarData(gbtx, ip_controller)
 
     def setPattern(self, data, ip_controller):
+        print("pattern ...")
         gbtx = bytearray(714)
         # trama normal para escritura
         gbtx[0] = 192
@@ -845,10 +863,11 @@ class MySocketHT200:
             gbtx[num] = CheckSumCalc
             num += 1
         gbtx[num] = 192  # frame tail
-
+        print("se envia pattern correctamente")
         return self.enviarData(gbtx, ip_controller)
 
     def setAction(self, data, ip_controller):
+        print("action ...")
         gbtx = bytearray(414)
         # trama normal para escritura
         gbtx[0] = 192
@@ -902,9 +921,11 @@ class MySocketHT200:
             gbtx[num] = CheckSumCalc
             num += 1
         gbtx[num] = 192  # frame tail
+        print("se envia accion correctamente")
         return self.enviarData(gbtx, ip_controller)
 
     def setPlan(self, data, ip_controller):
+        print("plan ...")
         gbtx = bytearray(1182)
         # trama normal para escritura
         gbtx[0] = 192
@@ -1019,6 +1040,7 @@ class MySocketHT200:
         return self.enviarData(gbtx, ip_controller)
 
     def setChannel(self, data, ip_controller):
+        print("canal ...")
         gbtx = bytearray(142)
         # trama normal para escritura
         gbtx[0] = 192
@@ -1183,7 +1205,59 @@ class MySocketHT200:
             return False
         else:
             return True
-
+        
+    def setControlManual(self, data_target, ip_controller):
+            gbtx = bytearray(19)
+            # trama normal para escritura
+            gbtx[0] = 192
+            gbtx[1] = 32
+            gbtx[2] = 32
+            gbtx[3] = 16
+            gbtx[4] = 4
+            gbtx[5] = 1
+            gbtx[6] = 1
+            gbtx[7] = 0
+            gbtx[8] = 129
+            temp_var = []
+            num = 9
+            temp_num = 8
+            for x in data_target:
+                temp_var.append(int(x))
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num += 1
+                    gbtx[num] = 0xDC
+                    num += 1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num += 1
+                    gbtx[num] = 0xDD
+                    num += 1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num += 1
+            CheckSumCalc = 0
+            for i in range(1, num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+            if CheckSumCalc == 0xC0:
+                gbtx[num] = 0xDB
+                num += 1
+                gbtx[num] = 0xDC
+                num += 1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num] = 0xDB
+                num += 1
+                gbtx[num] = 0xDD
+                num += 1
+            else:
+                gbtx[num] = CheckSumCalc
+                num += 1
+            gbtx[num] = 192  # frame tail
+            print(list(gbtx))
+            print(ip_controller)
+            return self.enviarData(gbtx, ip_controller)
 
 
     def enviarData(self, data, ip):
