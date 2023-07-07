@@ -435,6 +435,40 @@ class MySocketHT200:
                     "RedFailedDetectFlag": RedFailedDetectFlag
                 }
                 return unit_dict
+    def getUnitHT200(self, ip):
+        rx_var = self.__rx_var
+        if self.readPendingDatagrams(tramas.unit_frame, ip):
+            if self.__rx_num == 14:
+                StartupFlash = rx_var[0]
+                StartupAllRed = rx_var[1]
+                AutomaticPedClear = rx_var[2]
+                RedRevert = rx_var[3]
+                BackupTime = rx_var[4] | (rx_var[5] << 8)
+                FlowCycle = rx_var[6]
+                FlashStatus = rx_var[7]
+                Status = rx_var[8]
+                GreenConflictDetectFlag = rx_var[9]
+                RedGreenConflictDetectFlag = rx_var[10]
+                RedFailedDetectFlag = rx_var[11]
+                GoiaSync = rx_var[12]
+                ConexionSemaforos = rx_var[13]
+                unit_dict = {
+                    "StartupFlash": StartupFlash,
+                    "StartupAllRed": StartupAllRed,
+                    "AutomaticPedClear": AutomaticPedClear,
+                    "RedRevert": RedRevert,
+                    "BackupTime": BackupTime,
+                    "FlowCycle": FlowCycle,
+                    "FlashStatus": FlashStatus,
+                    "Status": Status,
+                    "GreenConflictDetectFlag": GreenConflictDetectFlag,
+                    "RedGreenConflictDetectFlag": RedGreenConflictDetectFlag,
+                    "RedFailedDetectFlag": RedFailedDetectFlag,
+                    "GoiaSync":GoiaSync,
+                    "SemaforoFlag":ConexionSemaforos
+                }
+                print(unit_dict)
+                return unit_dict
 
     def getChannel(self, ip):
         rx_var = self.__rx_var
@@ -628,6 +662,61 @@ class MySocketHT200:
             num += 1
         gbtx[num] = 192  # frame tail
         return self.enviarData(gbtx, ip_controller)
+    def setUnitHT200(self, data, ip_controller):
+            gbtx = bytearray(27)
+            # trama normal para escritura
+            gbtx[0] = 192
+            gbtx[1] = 32
+            gbtx[2] = 32
+            gbtx[3] = 16
+            gbtx[5] = 1
+            gbtx[6] = 1
+            gbtx[7] = 0
+            gbtx[10] = 1
+            # trama que especifica que se van a grabar los datos en unit
+            gbtx[4] = 3
+            gbtx[8] = 129
+            gbtx[9] = 21
+            temp_var = []
+            num = 11
+            temp_num = 14
+            for i in data:
+                # coegmos los datos de la api y los convertimos en una lista para posteriormente formatear y crear la trama udp
+                temp_var.append(i)
+            for i in range(temp_num):
+                if temp_var[i] == 0xC0:
+                    gbtx[num] = 0xDB
+                    num += 1
+                    gbtx[num] = 0xDC
+                    num += 1
+                elif temp_var[i] == 0xDB:
+                    gbtx[num] = 0xDB
+                    num += 1
+                    gbtx[num] = 0xDD
+                    num += 1
+                else:
+                    gbtx[num] = temp_var[i]
+                    num += 1
+            CheckSumCalc = 0
+            for i in range(1, num):
+                CheckSumCalc += gbtx[i]
+            CheckSumCalc = (CheckSumCalc % 256)
+
+            if CheckSumCalc == 0xC0:
+                gbtx[num] = 0xDB
+                num += 1
+                gbtx[num] = 0xDC
+                num += 1
+            elif CheckSumCalc == 0xDB:
+                gbtx[num] = 0xDB
+                num += 1
+                gbtx[num] = 0xDD
+                num += 1
+            else:
+                gbtx[num] = CheckSumCalc
+                num += 1
+            gbtx[num] = 192  # frame tail
+            return self.enviarData(gbtx, ip_controller)
 
     def setFases(self, data, ip_controller):
         gbtx = bytearray(526)

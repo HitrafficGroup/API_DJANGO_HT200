@@ -159,11 +159,23 @@ class readBasicInfoHT200(APIView):
             return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
 
 
-class readUnitHT200(APIView):
+class readUnitHSW200(APIView):
     def get(self, request, *args, **kwargs):
         try:
             ip=request.GET.get('ip')
             result = controlador_ht200.getUnit(ip)
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            result = {"error": "problema en el controlador"}
+            return Response(result,status=status.HTTP_408_REQUEST_TIMEOUT)
+
+class readUnitHT200(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            ip=request.GET.get('ip')
+            result = controlador_ht200.getUnitHT200(ip)
             return Response(result,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
@@ -256,6 +268,25 @@ class setControlManualHT200(APIView):
             print("algo ocurrio mal")
             return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
 class setUnitHT200(APIView):
+    def post(self, request, *args, **kwargs):
+        if len(request.body) == 0 :
+            raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
+        json_data = json.loads(request.body)
+        print(json_data)
+        try:
+            ip=request.GET.get('ip')
+            result = controlador_ht200.setUnitHT200(json_data['trama'],ip)
+            if result:
+                print('envio correcto')
+                return Response(result,status=status.HTTP_200_OK)
+            else:
+                print('envio incorrecto')
+                return Response(result,status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
+            print("algo ocurrio mal")
+            return Response({"mal":"data"},status=status.HTTP_408_REQUEST_TIMEOUT) 
+class setUnitSW200(APIView):
     def post(self, request, *args, **kwargs):
         if len(request.body) == 0 :
             raise Exception('Datos de entrada invalidos: se requiere pasar la ip')
