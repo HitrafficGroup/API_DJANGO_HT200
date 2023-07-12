@@ -14,12 +14,14 @@ class MySocketHT200:
         self.__ips_connected = []
         self.__port = 161
 
-    def readPendingDatagrams(self, frame, ip_controller):
+    def readPendingDatagrams(self, frame, ip_controller,timeout_request = 10):
         CheckSumCalc = 0
         CheckSumReceive = 0
         data_received = bytearray()
+        flag_good_connection = False
         try:
             __udpsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            __udpsocket.settimeout(timeout_request)
             port = 13536
             while True:
                 try:
@@ -27,10 +29,17 @@ class MySocketHT200:
                     __udpsocket.sendto(frame, (ip_controller, self.__port))
                     data_received, sender = __udpsocket.recvfrom(2048)
                     self.__ips_connected.append(sender)
+                    flag_good_connection = True 
                     break
                 except OSError:
                     port += 1
+                except __udpsocket.timeout:
+                    flag_good_connection = False 
+                    print("closing socket")
+                    break
             __udpsocket.close()
+            if flag_good_connection == False:
+                return False
             # convertimos en una lista de enteros los valores recibidos por udp
             array_data_received = list(data_received)
             size = len(array_data_received)
@@ -355,7 +364,8 @@ class MySocketHT200:
 
     def getDeviceInfo(self, ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.device_info_frame, ip):
+        print('se piden datos')
+        if self.readPendingDatagrams(tramas.device_info_frame, ip,timeout_request=2):
             StrLen = 0
             temp = [0] * 64
 
@@ -365,15 +375,36 @@ class MySocketHT200:
                     StrLen += 1
                 else:
                     break
-
+            pt = 0
+            aux_lat = []
+            latitud = 0
+            for i in range(14):
+                if rx_var[i+100]== 46:
+                    pt = i
+                aux_lat.append(rx_var[i+100]-48)
+            if pt != 0:
+                latitud = (aux_lat[pt-4]*10+aux_lat[pt-3])+ ((aux_lat[pt-2]*10)+aux_lat[pt-1]+(aux_lat[pt+1]*0.1)+(aux_lat[pt+2]*0.01)+(aux_lat[pt+3]*0.001)+(aux_lat[pt+4]*0.0001))/60
+                if rx_var[100]== ord('0'):
+                    latitud = latitud*-1
+            aux_lng = []
+            longitud = 0
+            pt = 0
+            for i in range(14):
+                if rx_var[i+114]== 46:
+                    pt = i
+                aux_lng.append(rx_var[i+114]-48)
+            if pt != 0:
+                longitud = (aux_lng[pt-4]*10+aux_lng[pt-3])+ ((aux_lng[pt-2]*10)+aux_lng[pt-1]+(aux_lng[pt+1]*0.1)+(aux_lng[pt+2]*0.01)+(aux_lng[pt+3]*0.001)+(aux_lng[pt+4]*0.0001))/60
+                if rx_var[114]== ord('0'):
+                    longitud = longitud*-1
             manufacturerInfoStr = ''.join(
                 [chr(temp[i]) for i in range(StrLen)])
-            deviceinfo_dict = {'manufacurer': manufacturerInfoStr}
+            deviceinfo_dict = {'manufacturer': manufacturerInfoStr,'latitud':latitud,'longitud':longitud}
             return deviceinfo_dict
 
     def getBasicInfo(self, ip):
         rx_var = self.__rx_var
-        if self.readPendingDatagrams(tramas.basic_info_frame, ip):
+        if self.readPendingDatagrams(tramas.basic_info_frame, ip,timeout_request=2):
             # StrLen = 0
             # temp = np.empty(64)
             # i = 0
@@ -397,11 +428,11 @@ class MySocketHT200:
             tscNum = (rx_var[159] << 24) | (rx_var[160] << 16) | (
                 rx_var[161] << 8) | rx_var[162]
             basicinfo_dict = {
-                "mac_target: ": mac_addr,
-                "ip_target: ": ip_server,
-                "puerto_server: ": port_server,
-                "zona_horaria: ": zona_horaria,
-                "numero_dispositivo: ": tscNum
+                "mac_target": mac_addr,
+                "ip_target": ip_server,
+                "puerto_server": port_server,
+                "zona_horaria": zona_horaria,
+                "numero_dispositivo": tscNum
             }
             return basicinfo_dict
 
