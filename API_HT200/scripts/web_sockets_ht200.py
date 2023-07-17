@@ -1,8 +1,7 @@
 import socket
-import time
 from scripts import tramas
 import datetime
-import pandas as pd
+
 
 
 class MySocketHT200:
@@ -27,8 +26,7 @@ class MySocketHT200:
                 try:
                     __udpsocket.bind(('0.0.0.0', port))
                     __udpsocket.sendto(frame, (ip_controller, self.__port))
-                    data_received, sender = __udpsocket.recvfrom(2048)
-                    self.__ips_connected.append(sender)
+                    data_received,sender = __udpsocket.recvfrom(2048)
                     flag_good_connection = True 
                     break
                 except OSError:
@@ -43,7 +41,6 @@ class MySocketHT200:
             # convertimos en una lista de enteros los valores recibidos por udp
             array_data_received = list(data_received)
             size = len(array_data_received)
-
             if array_data_received[size-3] == 0xDB and array_data_received[size-2] == 0xDC:
                 dataEndPoint = size-4
                 CheckSumReceive = 0xC0
@@ -59,12 +56,10 @@ class MySocketHT200:
                 CheckSumReceive = array_data_received[size-2]
                 for i in range(1, dataEndPoint+1):
                     CheckSumCalc += array_data_received[i]
-            # CheckSumCalc = np.uint8(CheckSumCalc)
-            # CheckSumReceive = np.uint8(CheckSumReceive)
-            ''''
-            pendiente revisar la funcion checksum para la verificacion de valores. se podria implementar la libreria ctypes
-            para mejorar la conversion de los datos.
-            '''
+            CheckSumCalc = (CheckSumCalc % 256)
+            if CheckSumCalc != CheckSumReceive:
+                print("checksum diferente")
+                return False
             self.__rx_num = 0
             self.__num = 11
             while self.__num <= dataEndPoint:
@@ -328,7 +323,6 @@ class MySocketHT200:
 
     def getScnedule(self, ip):
         rx_var = self.__rx_var
-        print('pedimos horarios')
         if self.readPendingDatagrams(tramas.schedule_frame, ip):
             schedule_size = 9
             schedule_list = []
@@ -368,7 +362,6 @@ class MySocketHT200:
         if self.readPendingDatagrams(tramas.device_info_frame, ip,timeout_request=2):
             StrLen = 0
             temp = [0] * 64
-
             for i in range(0, 128, 2):
                 if rx_var[i] != 0x00 or rx_var[i + 1] != 0x00:
                     temp[StrLen] = (rx_var[i] << 8) | rx_var[i + 1]
@@ -405,17 +398,6 @@ class MySocketHT200:
     def getBasicInfo(self, ip):
         rx_var = self.__rx_var
         if self.readPendingDatagrams(tramas.basic_info_frame, ip,timeout_request=2):
-            # StrLen = 0
-            # temp = np.empty(64)
-            # i = 0
-            # while i < 128:
-            #     if rx_var[i] != 0x00 or rx_var[i+1] != 0x00:
-            #         temp[StrLen] = (rx_var[i]<<8)|rx_var[i+1]
-            #         StrLen += 1
-            #         i += 2
-            #     else:
-            #         break
-            # InterInfoStr = ''.join([chr(temp[i]) for i in range(StrLen)])
             mac_addr = bytearray([rx_var[i] for i in range(142, 148)])
             mac_addr = mac_addr.hex().upper()
             mac_addr = ':'.join([mac_addr[i:i+2] for i in range(0, 12, 2)])
